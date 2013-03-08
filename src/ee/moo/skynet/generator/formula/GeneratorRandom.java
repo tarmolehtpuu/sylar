@@ -1,4 +1,6 @@
-package ee.moo.skynet.generator;
+package ee.moo.skynet.generator.formula;
+
+import ee.moo.skynet.generator.Generator;
 
 import java.util.ArrayList;
 import java.util.List;
