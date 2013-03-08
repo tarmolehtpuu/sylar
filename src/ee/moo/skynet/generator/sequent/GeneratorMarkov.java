@@ -11,7 +11,6 @@ import java.util.*;
  */
 public class GeneratorMarkov implements Generator {
 
-
     private static final int STATE_TERM = 0;
     private static final int STATE_NOT = 1;
     private static final int STATE_OR = 2;
@@ -21,7 +20,6 @@ public class GeneratorMarkov implements Generator {
     private static final int STATE_LEFT = 6;
     private static final int STATE_RIGHT = 7;
     private static final int STATE_STOP = 8;
-
 
     private static final String[] TERMS = {
             "A", "B", "C", "D", "E",
@@ -126,7 +124,7 @@ public class GeneratorMarkov implements Generator {
                 // 30% chance of stopping after a term,
                 // given that result already contains a sequent sign
 
-                if (result.indexOf("→") != -1 && random.nextInt(100) > 70) {
+                if (result.indexOf(OPERATORS[STATE_SEQ]) != -1 && random.nextInt(100) > 70) {
                     stateNext = STATE_STOP;
 
                     // make sure all right parentheses are closed before
@@ -157,7 +155,7 @@ public class GeneratorMarkov implements Generator {
 
                 // only allow one sequent sign
 
-                if (result.indexOf("→") != -1) {
+                if (result.indexOf(OPERATORS[STATE_SEQ]) != -1) {
                     return step();
                 }
 
