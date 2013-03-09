@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class GeneratorMarkov implements Generator {
 
-    private static final int STATE_TERM = 0;
+    private static final int STATE_ATOM = 0;
     private static final int STATE_NOT = 1;
     private static final int STATE_OR = 2;
     private static final int STATE_AND = 3;
@@ -21,7 +21,7 @@ public class GeneratorMarkov implements Generator {
     private static final int STATE_RIGHT = 7;
     private static final int STATE_STOP = 8;
 
-    private static final String[] TERMS = {
+    private static final String[] ATOMS = {
             "A", "B", "C", "D", "E",
             "F", "G", "H", "I", "J"
     };
@@ -117,11 +117,11 @@ public class GeneratorMarkov implements Generator {
 
         switch (stateNext) {
 
-            case STATE_TERM:
+            case STATE_ATOM:
 
-                builder.append(TERMS[random.nextInt(TERMS.length)]);
+                builder.append(ATOMS[random.nextInt(ATOMS.length)]);
 
-                // 30% chance of stopping after a term,
+                // 30% chance of stopping after an atom,
                 // given that result already contains a sequent sign
 
                 if (result.indexOf(OPERATORS[STATE_SEQ]) != -1 && random.nextInt(100) > 70) {

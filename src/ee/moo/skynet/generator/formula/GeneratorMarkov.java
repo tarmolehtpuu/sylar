@@ -11,14 +11,14 @@ import java.util.Random;
  */
 public class GeneratorMarkov implements Generator {
 
-    private static final int STATE_TERM = 0;
+    private static final int STATE_ATOM = 0;
     private static final int STATE_NOT = 1;
     private static final int STATE_OR = 2;
     private static final int STATE_AND = 3;
     private static final int STATE_IMP = 4;
     private static final int STATE_EQ = 5;
 
-    private static final String[] TERMS = {
+    private static final String[] ATOMS = {
             "A", "B", "C", "D", "E",
             "F", "G", "H", "I", "J"
     };
@@ -61,8 +61,8 @@ public class GeneratorMarkov implements Generator {
         while (true) {
             result.append(step());
 
-            // 50% chance of stopping after a term, given that result already contains an implication
-            if (result.indexOf("⊃") != -1 && state == STATE_TERM && random.nextInt(100) > 50) {
+            // 50% chance of stopping after an atom, given that result already contains an implication
+            if (result.indexOf("⊃") != -1 && state == STATE_ATOM && random.nextInt(100) > 50) {
                 break;
             }
         }
@@ -87,8 +87,8 @@ public class GeneratorMarkov implements Generator {
 
                 switch (state) {
 
-                    case STATE_TERM:
-                        return TERMS[random.nextInt(TERMS.length)];
+                    case STATE_ATOM:
+                        return ATOMS[random.nextInt(ATOMS.length)];
 
                     case STATE_NOT:
                         return OPERATORS[state];

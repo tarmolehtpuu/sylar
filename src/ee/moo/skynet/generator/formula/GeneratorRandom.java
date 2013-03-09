@@ -13,11 +13,11 @@ import java.util.Random;
  */
 public class GeneratorRandom implements Generator {
 
-    private static final String TYPE_TERM = "T";
+    private static final String TYPE_ATOM = "A";
     private static final String TYPE_UNARY = "U";
     private static final String TYPE_BINARY = "B";
 
-    private static final String[] TERMS = {
+    private static final String[] ATOMS = {
             "A", "B", "C", "D", "E",
             "F", "G", "H", "I", "J",
     };
@@ -45,7 +45,7 @@ public class GeneratorRandom implements Generator {
         StringBuilder result = new StringBuilder();
 
         types.clear();
-        types.add(TYPE_TERM);
+        types.add(TYPE_ATOM);
         types.add(TYPE_UNARY);
 
 
@@ -53,17 +53,17 @@ public class GeneratorRandom implements Generator {
 
             String type = types.get(random.nextInt(types.size()));
 
-            if (type.equals(TYPE_TERM)) {
+            if (type.equals(TYPE_ATOM)) {
 
-                result.append(random(TERMS));
+                result.append(random(ATOMS));
 
-                // 50% chance of stopping after a term, given that result already contains an implication
+                // 50% chance of stopping after an atom, given that result already contains an implication
                 if (result.indexOf("⊃") != -1 && random.nextInt(100) > 50) {
                     break;
                 }
 
                 types.add(TYPE_BINARY);
-                types.remove(TYPE_TERM);
+                types.remove(TYPE_ATOM);
                 types.remove(TYPE_UNARY);
 
             } else if (type.equals(TYPE_UNARY)) {
@@ -76,7 +76,7 @@ public class GeneratorRandom implements Generator {
                 result.append(random(OPERATOR_BINARY));
                 result.append(' ');
 
-                types.add(TYPE_TERM);
+                types.add(TYPE_ATOM);
                 types.add(TYPE_UNARY);
                 types.remove(TYPE_BINARY);
             }
