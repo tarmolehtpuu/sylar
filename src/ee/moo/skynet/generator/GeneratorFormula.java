@@ -1,6 +1,4 @@
-package ee.moo.skynet.generator.formula;
-
-import ee.moo.skynet.generator.Generator;
+package ee.moo.skynet.generator;
 
 import java.util.Random;
 
@@ -9,7 +7,7 @@ import java.util.Random;
  * Date: 3/4/13
  * Time: 10:21 PM
  */
-public class GeneratorMarkov implements Generator {
+public class GeneratorFormula implements Generator {
 
     private static final int STATE_ATOM = 0;
     private static final int STATE_NOT = 1;
@@ -47,7 +45,7 @@ public class GeneratorMarkov implements Generator {
     private int state;
 
 
-    public GeneratorMarkov() {
+    public GeneratorFormula() {
         this.random = new Random();
     }
 
@@ -119,7 +117,7 @@ public class GeneratorMarkov implements Generator {
 
     public static void main(String[] args) {
 
-        Generator generator = new GeneratorMarkov();
+        Generator generator = new GeneratorFormula();
 
         for (int i = 0; i < 5040; i++) {
             System.out.println(generator.generate());

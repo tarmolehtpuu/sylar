@@ -1,6 +1,4 @@
-package ee.moo.skynet.generator.sequent;
-
-import ee.moo.skynet.generator.Generator;
+package ee.moo.skynet.generator;
 
 import java.util.*;
 
@@ -9,7 +7,7 @@ import java.util.*;
  * Date: 3/8/13
  * Time: 9:19 PM
  */
-public class GeneratorMarkov implements Generator {
+public class GeneratorSequent implements Generator {
 
     private static final int STATE_ATOM = 0;
     private static final int STATE_NOT = 1;
@@ -59,7 +57,7 @@ public class GeneratorMarkov implements Generator {
 
     private StringBuilder result;
 
-    public GeneratorMarkov() {
+    public GeneratorSequent() {
 
         random = new Random();
         matrix = new HashMap<Integer, List<Integer>>();
@@ -205,7 +203,7 @@ public class GeneratorMarkov implements Generator {
 
     public static void main(String[] args) {
 
-        Generator generator = new GeneratorMarkov();
+        Generator generator = new GeneratorSequent();
 
         for (int i = 0; i < 5040; i++) {
             System.out.println(generator.generate());
