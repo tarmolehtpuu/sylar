@@ -99,11 +99,6 @@ public class GeneratorSequent implements Generator {
         return result.toString();
     }
 
-    @Override
-    public boolean isDone() {
-        return false;
-    }
-
     private String step() {
 
         Collections.shuffle(matrix.get(state));

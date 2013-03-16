@@ -68,11 +68,6 @@ public class GeneratorFormula implements Generator {
         return result.toString();
     }
 
-    @Override
-    public boolean isDone() {
-        return false;
-    }
-
     private String step() {
 
         double roll = random.nextDouble();

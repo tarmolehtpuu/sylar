@@ -9,5 +9,4 @@ public interface Generator {
 
     String generate();
 
-    boolean isDone();
 }
