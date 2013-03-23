@@ -1,15 +1,14 @@
 package ee.moo.skynet.input;
 
+import ee.moo.skynet.Formula;
+
 /**
  * User: tarmo
  * Date: 3/23/13
  * Time: 4:47 PM
  */
-public class Parser {
+public abstract class Parser {
 
-    public static Parser create(String input) {
+    public abstract Formula parse(String input);
 
-        return null;
-
-    }
 }

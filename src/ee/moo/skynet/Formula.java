@@ -1,5 +1,10 @@
 package ee.moo.skynet;
 
+import ee.moo.skynet.alphabet.AlphabetFormula;
+import ee.moo.skynet.alphabet.AlphabetSequent;
+import ee.moo.skynet.input.ParserFormula;
+import ee.moo.skynet.input.ParserSequent;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +20,9 @@ public class Formula {
     private Formula right;
 
     private Node node;
+
+    public Formula() {
+    }
 
     public Formula(Node node) {
         this.node = node;
@@ -206,29 +214,61 @@ public class Formula {
 
     }
 
+    @Override
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+
+        if (left != null) {
+            builder.append('(');
+            builder.append(left.toString());
+        }
+
+        if (node.isStatement()) {
+            builder.append(node.getName());
+        } else {
+            builder.append(node.getTypeString());
+        }
+
+        if (right != null) {
+            builder.append(right.toString());
+            builder.append(')');
+        }
+
+        return builder.toString();
+
+    }
+
+    public static Formula parse(String input) {
+
+        if (new AlphabetFormula().isValid(input)) {
+            return new ParserFormula().parse(input);
+        }
+
+        if (new AlphabetSequent().isValid(input)) {
+            return new ParserSequent().parse(input);
+        }
+
+        throw new FormulaException(String.format("Invalid formula: %s", input));
+
+    }
+
     public static void main(String[] args) {
 
-        Formula lhs = new Formula(new Node(NodeType.CONJUNCTION),
-                new Formula(new Node(NodeType.STATEMENT, "A")),
-                new Formula(new Node(NodeType.STATEMENT, "B")));
+        Formula formula = Formula.parse("((A & B) ⇔ (C v D))");
 
-        Formula rhs = new Formula(new Node(NodeType.INVERSION),
-                new Formula(new Node(NodeType.STATEMENT, "C")));
+        System.out.println(formula.isTrueAlways());
+        System.out.println(formula.isFalseAlways());
 
-        Formula root = new Formula(new Node(NodeType.IMPLICATION), lhs, rhs);
+        String[] statement = formula.getStatements();
 
-        System.out.println(root.isTrueAlways());
-        System.out.println(root.isFalseAlways());
-
-        String[] statement = root.getStatements();
-
-        for (int[] permutation : root.getStatementPermutations()) {
+        for (int[] permutation : formula.getStatementPermutations()) {
 
             for (int i = 0; i < statement.length; i++) {
-                root.setValue(statement[i], permutation[i]);
+                formula.setValue(statement[i], permutation[i]);
             }
 
-            System.out.println(root.evaluate());
+            System.out.println(formula.evaluate());
         }
     }
 }

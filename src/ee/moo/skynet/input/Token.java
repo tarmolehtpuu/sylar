@@ -28,4 +28,12 @@ public class Token {
         return data;
     }
 
+    public String toString() {
+
+        if (type == TokenType.STATEMENT) {
+            return String.format("Token[type = %s, data = %s]", type, data);
+        } else {
+            return String.format("Token[type = %s]", type);
+        }
+    }
 }

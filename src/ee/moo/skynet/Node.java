@@ -1,5 +1,7 @@
 package ee.moo.skynet;
 
+import ee.moo.skynet.alphabet.AlphabetFormula;
+
 /**
  * User: tarmo
  * Date: 3/23/13
@@ -12,6 +14,9 @@ public class Node {
     private String name;
 
     private boolean data;
+
+    public Node() {
+    }
 
     public Node(NodeType type) {
         this.type = type;
@@ -28,6 +33,33 @@ public class Node {
 
     public NodeType getType() {
         return type;
+    }
+
+    public String getTypeString() {
+
+        AlphabetFormula alphabet = new AlphabetFormula();
+
+        switch (type) {
+
+            case INVERSION:
+                return alphabet.getSymbolInversionString();
+
+            case CONJUNCTION:
+                return alphabet.getSymbolConjunctionString();
+
+            case DISJUNCTION:
+                return alphabet.getSymbolDisjunctionString();
+
+            case IMPLICATION:
+                return alphabet.getSymbolImplicationString();
+
+            case EQUIVALENCE:
+                return alphabet.getSymbolEquivalenceString();
+
+            default:
+                throw new FormulaException(String.format("Invalid node type: %s", type));
+        }
+
     }
 
     public String getName() {
@@ -83,5 +115,17 @@ public class Node {
 
     public boolean isEquivalence() {
         return type == NodeType.EQUIVALENCE;
+    }
+
+    public String toString() {
+
+        if (this.isStatement()) {
+            return String.format("Node[type=%s, name=%s, data=%s",
+                    String.valueOf(this.getType()),
+                    String.valueOf(this.getName()),
+                    String.valueOf(this.getData()));
+        } else {
+            return String.format("Node[type=%s]", String.valueOf(this.getType()));
+        }
     }
 }
