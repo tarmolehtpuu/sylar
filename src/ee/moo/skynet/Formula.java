@@ -100,7 +100,7 @@ public class Formula {
             right.setValue(name, value);
         }
 
-        if (name.equals(node.getName())) {
+        if (node.isStatement() && name.equals(node.getName())) {
             node.setData(value);
         }
     }

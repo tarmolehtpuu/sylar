@@ -31,19 +31,34 @@ public class Node {
     }
 
     public String getName() {
+
+        if (!isStatement()) {
+            throw new FormulaException("Only NodeType.STATEMENT may contain a value for name!");
+        }
+
         return name;
     }
 
     public boolean getData() {
+
+        if (!isStatement()) {
+            throw new FormulaException("Only NodeType.STATEMENT may contain a value for data!");
+        }
+
         return data;
     }
 
     public void setData(boolean data) {
+
+        if (!isStatement()) {
+            throw new FormulaException("Only NodeType.STATEMENT may contain a value for data!");
+        }
+
         this.data = data;
     }
 
     public void setData(int data) {
-        this.data = data == 1;
+        this.setData(data == 1);
     }
 
     public boolean isStatement() {
