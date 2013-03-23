@@ -50,7 +50,7 @@ public class GeneratorFormula implements Generator {
         while (true) {
             result.append(step());
 
-            // 50% chance of stopping after an atom, given that result already contains an implication
+            // 50% chance of stopping after a statement, given that result already contains an implication
             if (result.indexOf(alphabet.getSymbolImplicationString()) != -1 && state == STATE_STATEMENT && random.nextInt(100) > 50) {
                 break;
             }

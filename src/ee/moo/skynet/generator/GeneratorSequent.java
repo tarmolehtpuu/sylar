@@ -104,7 +104,7 @@ public class GeneratorSequent implements Generator {
 
                 builder.append(STATEMENTS[random.nextInt(STATEMENTS.length)]);
 
-                // 30% chance of stopping after an atom,
+                // 30% chance of stopping after a statement,
                 // given that result already contains a sequent sign
 
                 if (result.indexOf(alphabet.getSymbolSequentString()) != -1 && random.nextInt(100) > 70) {
