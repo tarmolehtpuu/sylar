@@ -1,5 +1,7 @@
 package ee.moo.skynet.generator;
 
+import ee.moo.skynet.alphabet.AlphabetSequent;
+
 import java.util.*;
 
 /**
@@ -9,31 +11,15 @@ import java.util.*;
  */
 public class GeneratorSequent implements Generator {
 
-    private static final int STATE_ATOM = 0;
-    private static final int STATE_NOT = 1;
-    private static final int STATE_OR = 2;
-    private static final int STATE_AND = 3;
-    private static final int STATE_IMP = 4;
-    private static final int STATE_SEQ = 5;
+    private static final int STATE_STATEMENT = 0;
+    private static final int STATE_INVERSION = 1;
+    private static final int STATE_DISJUNCTION = 2;
+    private static final int STATE_CONJUNCTION = 3;
+    private static final int STATE_IMPLICATION = 4;
+    private static final int STATE_SEQUENT = 5;
     private static final int STATE_LEFT = 6;
     private static final int STATE_RIGHT = 7;
     private static final int STATE_STOP = 8;
-
-    private static final String[] ATOMS = {
-            "A", "B", "C", "D", "E",
-            "F", "G", "H", "I", "J"
-    };
-
-    private static final String[] OPERATORS = {
-            "",
-            "!",
-            "∨",
-            "&",
-            "⊃",
-            "→",
-            "(",
-            ")"
-    };
 
     private static final double[][] MATRIX = {
             // T     !     ∨     &     ⊃     →     (     )
@@ -50,6 +36,8 @@ public class GeneratorSequent implements Generator {
 
     private Random random;
 
+    private AlphabetSequent alphabet;
+
     private Map<Integer, List<Integer>> matrix;
 
     private int state;
@@ -58,6 +46,8 @@ public class GeneratorSequent implements Generator {
     private StringBuilder result;
 
     public GeneratorSequent() {
+
+        alphabet = new AlphabetSequent();
 
         random = new Random();
         matrix = new HashMap<Integer, List<Integer>>();
@@ -81,7 +71,7 @@ public class GeneratorSequent implements Generator {
     @Override
     public String generate() {
 
-        state = STATE_AND;
+        state = STATE_CONJUNCTION;
         depth = 0;
 
         result = new StringBuilder();
@@ -110,62 +100,74 @@ public class GeneratorSequent implements Generator {
 
         switch (stateNext) {
 
-            case STATE_ATOM:
+            case STATE_STATEMENT:
 
-                builder.append(ATOMS[random.nextInt(ATOMS.length)]);
+                builder.append(STATEMENTS[random.nextInt(STATEMENTS.length)]);
 
                 // 30% chance of stopping after an atom,
                 // given that result already contains a sequent sign
 
-                if (result.indexOf(OPERATORS[STATE_SEQ]) != -1 && random.nextInt(100) > 70) {
+                if (result.indexOf(alphabet.getSymbolSequentString()) != -1 && random.nextInt(100) > 70) {
                     stateNext = STATE_STOP;
 
                     // make sure all right parentheses are closed before
                     // formula is considered complete
                     while (depth > 0) {
-                        builder.append(OPERATORS[STATE_RIGHT]);
+                        builder.append(alphabet.getSymbolRightParenthesis());
                         depth--;
                     }
                 }
 
                 break;
 
-            case STATE_NOT:
+            case STATE_INVERSION:
 
-                builder.append(OPERATORS[stateNext]);
+                builder.append(alphabet.getSymbolInversion());
                 break;
 
-            case STATE_AND:
-            case STATE_OR:
-            case STATE_IMP:
+            case STATE_CONJUNCTION:
 
-                builder.append(' ');
-                builder.append(OPERATORS[stateNext]);
-                builder.append(' ');
+                builder.append(alphabet.getSymbolWhitespace());
+                builder.append(alphabet.getSymbolConjunction());
+                builder.append(alphabet.getSymbolWhitespace());
                 break;
 
-            case STATE_SEQ:
+            case STATE_DISJUNCTION:
+
+                builder.append(alphabet.getSymbolWhitespace());
+                builder.append(alphabet.getSymbolDisjunction());
+                builder.append(alphabet.getSymbolWhitespace());
+                break;
+
+            case STATE_IMPLICATION:
+
+                builder.append(alphabet.getSymbolWhitespace());
+                builder.append(alphabet.getSymbolImplication());
+                builder.append(alphabet.getSymbolWhitespace());
+                break;
+
+            case STATE_SEQUENT:
 
                 // only allow one sequent sign
 
-                if (result.indexOf(OPERATORS[STATE_SEQ]) != -1) {
+                if (result.indexOf(alphabet.getSymbolSequentString()) != -1) {
                     return step();
                 }
 
                 // make sure all parentheses are closed before sequent sign
                 while (depth > 0) {
-                    builder.append(OPERATORS[STATE_RIGHT]);
+                    builder.append(alphabet.getSymbolRightParenthesis());
                     depth--;
                 }
 
-                builder.append(' ');
-                builder.append(OPERATORS[stateNext]);
-                builder.append(' ');
+                builder.append(alphabet.getSymbolWhitespace());
+                builder.append(alphabet.getSymbolSequent());
+                builder.append(alphabet.getSymbolWhitespace());
                 break;
 
             case STATE_LEFT:
 
-                builder.append(OPERATORS[stateNext]);
+                builder.append(alphabet.getSymbolLeftParenthesis());
                 depth++;
                 break;
 
@@ -179,14 +181,15 @@ public class GeneratorSequent implements Generator {
                     return step();
 
                 } else {
-                    builder.append(OPERATORS[stateNext]);
+
+                    builder.append(alphabet.getSymbolRightParenthesis());
                     depth--;
                     break;
                 }
 
 
             default:
-                throw new RuntimeException(String.format("Illegal state: %d", state));
+                throw new GeneratorException(String.format("Illegal state: %d", state));
 
         }
 

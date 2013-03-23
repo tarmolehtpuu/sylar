@@ -211,7 +211,6 @@ public class Formula {
 
     }
 
-
     public static void main(String[] args) {
 
         Formula lhs = new Formula("&", new Formula("A"), new Formula("B"));

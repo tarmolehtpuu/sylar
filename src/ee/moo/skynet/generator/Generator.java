@@ -7,6 +7,11 @@ package ee.moo.skynet.generator;
  */
 public interface Generator {
 
+    public static final String[] STATEMENTS = {
+            "A", "B", "C", "D", "E",
+            "F", "G", "H", "I", "J"
+    };
+
     String generate();
 
 }

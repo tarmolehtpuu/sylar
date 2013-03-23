@@ -1,5 +1,8 @@
 package ee.moo.skynet.generator;
 
+import ee.moo.skynet.alphabet.Alphabet;
+import ee.moo.skynet.alphabet.AlphabetFormula;
+
 import java.util.Random;
 
 /**
@@ -9,26 +12,12 @@ import java.util.Random;
  */
 public class GeneratorFormula implements Generator {
 
-    private static final int STATE_ATOM = 0;
-    private static final int STATE_NOT = 1;
-    private static final int STATE_OR = 2;
-    private static final int STATE_AND = 3;
-    private static final int STATE_IMP = 4;
-    private static final int STATE_EQ = 5;
-
-    private static final String[] ATOMS = {
-            "A", "B", "C", "D", "E",
-            "F", "G", "H", "I", "J"
-    };
-
-    private static final String[] OPERATORS = {
-            "",
-            "!",
-            "∨",
-            "&",
-            "⊃",
-            "⇔"
-    };
+    private static final int STATE_STATEMENT = 0;
+    private static final int STATE_INVERSION = 1;
+    private static final int STATE_DISJUNCTION = 2;
+    private static final int STATE_CONJUNCTION = 3;
+    private static final int STATE_IMPLICATION = 4;
+    private static final int STATE_EQUIVALENCE = 5;
 
     private static final double[][] MATRIX = {
             // T     !     ∨     &     ⊃     ⇔
@@ -42,17 +31,19 @@ public class GeneratorFormula implements Generator {
 
     private Random random;
 
-    private int state;
+    private Alphabet alphabet;
 
+    private int state;
 
     public GeneratorFormula() {
         this.random = new Random();
+        this.alphabet = new AlphabetFormula();
     }
 
     @Override
     public String generate() {
 
-        state = STATE_AND;
+        state = STATE_CONJUNCTION;
 
         StringBuilder result = new StringBuilder();
 
@@ -60,7 +51,7 @@ public class GeneratorFormula implements Generator {
             result.append(step());
 
             // 50% chance of stopping after an atom, given that result already contains an implication
-            if (result.indexOf("⊃") != -1 && state == STATE_ATOM && random.nextInt(100) > 50) {
+            if (result.indexOf(alphabet.getSymbolImplicationString()) != -1 && state == STATE_STATEMENT && random.nextInt(100) > 50) {
                 break;
             }
         }
@@ -78,30 +69,50 @@ public class GeneratorFormula implements Generator {
 
                 state = i;
 
+                StringBuilder builder = new StringBuilder();
+
                 switch (state) {
 
-                    case STATE_ATOM:
-                        return ATOMS[random.nextInt(ATOMS.length)];
+                    case STATE_STATEMENT:
+                        return STATEMENTS[random.nextInt(STATEMENTS.length)];
 
-                    case STATE_NOT:
-                        return OPERATORS[state];
+                    case STATE_INVERSION:
+                        return alphabet.getSymbolInversionString();
 
-                    case STATE_AND:
-                    case STATE_OR:
-                    case STATE_IMP:
-                    case STATE_EQ:
+                    case STATE_CONJUNCTION:
 
-                        StringBuilder builder = new StringBuilder();
-
-                        builder.append(' ');
-                        builder.append(OPERATORS[state]);
-                        builder.append(' ');
+                        builder.append(alphabet.getSymbolWhitespace());
+                        builder.append(alphabet.getSymbolConjunction());
+                        builder.append(alphabet.getSymbolWhitespace());
 
                         return builder.toString();
 
+                    case STATE_DISJUNCTION:
+
+                        builder.append(alphabet.getSymbolWhitespace());
+                        builder.append(alphabet.getSymbolDisjunction());
+                        builder.append(alphabet.getSymbolWhitespace());
+
+                        return builder.toString();
+
+                    case STATE_IMPLICATION:
+
+                        builder.append(alphabet.getSymbolWhitespace());
+                        builder.append(alphabet.getSymbolImplication());
+                        builder.append(alphabet.getSymbolWhitespace());
+
+                        return builder.toString();
+
+                    case STATE_EQUIVALENCE:
+
+                        builder.append(alphabet.getSymbolWhitespace());
+                        builder.append(alphabet.getSymbolEquivalence());
+                        builder.append(alphabet.getSymbolWhitespace());
+
+                        return builder.toString();
 
                     default:
-                        throw new RuntimeException(String.format("Illegal state: %d", state));
+                        throw new GeneratorException(String.format("Illegal state: %d", state));
 
                 }
             }
