@@ -5,11 +5,20 @@ package ee.moo.skynet.input;
  * Date: 3/23/13
  * Time: 9:31 PM
  */
-public abstract class Token {
+public class Token {
 
-    protected TokenType type;
+    private TokenType type;
 
-    protected String data;
+    private String data;
+
+    public Token(TokenType type, String data) {
+        this.type = type;
+        this.data = data;
+    }
+
+    public Token(TokenType type) {
+        this.type = type;
+    }
 
     public TokenType getType() {
         return type;
@@ -18,4 +27,5 @@ public abstract class Token {
     public String getData() {
         return data;
     }
+
 }

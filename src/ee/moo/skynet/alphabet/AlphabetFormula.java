@@ -21,21 +21,4 @@ public class AlphabetFormula extends Alphabet {
                 || isSymbolWhitespace(c);
     }
 
-    @Override
-    public boolean isValid(String s) {
-
-        if (s == null || s.length() == 0) {
-            return false;
-        }
-
-        for (char c : s.toCharArray()) {
-            if (!isValid(c)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
 }
