@@ -127,7 +127,7 @@ public class Formula {
             right.setValue(name, value);
         }
 
-        if (isStatement() && name.equals(name)) {
+        if (isStatement() && this.name.equals(name)) {
             data = value;
         }
     }
@@ -319,21 +319,6 @@ public class Formula {
     }
 
     public static void main(String[] args) {
-
-        Formula formula = Formula.parse("((!A & B) ⇔ (C v D))");
-
-        System.out.println(formula.isTrueAlways());
-        System.out.println(formula.isFalseAlways());
-
-        String[] statement = formula.getStatements();
-
-        for (int[] permutation : formula.getStatementPermutations()) {
-
-            for (int i = 0; i < statement.length; i++) {
-                formula.setValue(statement[i], permutation[i]);
-            }
-
-            System.out.println(formula.evaluate());
-        }
+        System.out.println(Formula.parse("D ⊃ B").isTrueAlways());
     }
 }
