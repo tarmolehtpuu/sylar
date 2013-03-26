@@ -1,0 +1,6 @@
+http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm#shunting_yard
+http://en.wikipedia.org/wiki/Operator-precedence_parser
+http://antlr.org/papers/Clarke-expr-parsing-1986.pdf
+http://goose.ycp.edu/~dhovemey/fall2012/cs340/lecture/lecture06.html
+http://en.wikipedia.org/wiki/Shunting-yard_algorithm
+http://bmanolov.free.fr/javaoperators.php

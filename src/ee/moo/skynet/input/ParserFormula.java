@@ -1,10 +1,10 @@
 package ee.moo.skynet.input;
 
 import ee.moo.skynet.Formula;
-import ee.moo.skynet.Node;
-import ee.moo.skynet.NodeType;
 import ee.moo.skynet.alphabet.AlphabetFormula;
-import ee.moo.skynet.util.Stack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: tarmo
@@ -13,109 +13,99 @@ import ee.moo.skynet.util.Stack;
  */
 public class ParserFormula extends Parser {
 
-    private enum State {
-        FOO,
-        BAR
-    }
-
     private AlphabetFormula alphabet = new AlphabetFormula();
 
     @Override
     public Formula parse(String input) {
 
-        Formula formula = new Formula();
-        Formula current = formula;
-
-        Stack<Formula> stack;
-
-        stack = new Stack<Formula>();
-        stack.push(formula);
-
         Lexer lexer = new Lexer(input, alphabet);
         Token token;
 
+        List<Token> tokens = new ArrayList<Token>(input.length());
+
         while ((token = lexer.next()) != null) {
 
-            switch (token.getType()) {
-
-                case LEFTPAREN:
-
-                    stack.push(current);
-
-                    current.setLeft(new Formula(new Node()));
-                    current = current.getLeft();
-                    break;
-
-                case INVERSION:
-                    // TODO: implement inversion
-
-                    break;
-
-
-                case STATEMENT:
-
-                    current.setNode(new Node(NodeType.STATEMENT, token.getData()));
-                    current = stack.pop();
-
-                    break;
-
-                case CONJUNCTION:
-
-                    stack.push(current);
-
-                    current.setNode(new Node(NodeType.CONJUNCTION));
-                    current.setRight(new Formula(new Node()));
-
-                    current = current.getRight();
-                    break;
-
-
-                case DISJUNCTION:
-
-                    stack.push(current);
-
-                    current.setNode(new Node(NodeType.DISJUNCTION));
-                    current.setRight(new Formula(new Node()));
-
-                    current = current.getRight();
-                    break;
-
-                case IMPLICATION:
-
-                    stack.push(current);
-
-                    current.setNode(new Node(NodeType.IMPLICATION));
-                    current.setRight(new Formula(new Node()));
-
-                    current = current.getRight();
-                    break;
-
-                case EQUIVALENCE:
-
-                    stack.push(current);
-
-                    current.setNode(new Node(NodeType.EQUIVALENCE));
-                    current.setRight(new Formula(new Node()));
-
-                    current = current.getRight();
-                    break;
-
-
-                case RIGHTPAREN:
-
-                    current = stack.pop();
-                    break;
-
-                case WHITESPACE:
-                    break;
-
-                default:
-                    throw new ParserException(String.format("Illegal token: %s", token));
-
+            if (token.getType() != TokenType.WHITESPACE) {
+                tokens.add(token);
             }
+
+        }
+
+        Formula formula = parseExpression(tokens, 0);
+
+        if (!tokens.isEmpty()) {
+            throw new ParserException(String.format("Expecting end of input: %d token(s) remaining", tokens.size()));
         }
 
         return formula;
     }
 
+    private Formula parseExpression(List<Token> tokens, int precedence) {
+
+        Formula formula = parsePrimary(tokens);
+
+        while (true) {
+
+            if (tokens.isEmpty()) {
+                break;
+            }
+
+            Token token = tokens.get(0);
+
+            if (!token.isBinary()) {
+                break;
+            }
+
+            if (token.getPrecedence() <= precedence) {
+                break;
+            }
+
+            tokens.remove(0);
+
+            if (tokens.isEmpty()) {
+                throw new ParserException("Unexpected end of input");
+            }
+
+            formula = new Formula(token.getNodeType(), formula, parseExpression(tokens, token.getPrecedence()));
+
+
+        }
+
+        return formula;
+    }
+
+    private Formula parsePrimary(List<Token> tokens) {
+
+        if (tokens.isEmpty()) {
+            throw new ParserException(String.format("Unexpected end of input, expecting: %s or %s or %s",
+                    TokenType.STATEMENT, TokenType.LEFTPAREN, TokenType.INVERSION));
+        }
+
+        Token token = tokens.remove(0);
+
+        if (token.isStatement()) {
+            return new Formula(Formula.NodeType.STATEMENT, token.getData());
+
+        } else if (token.isInversion()) {
+            return new Formula(Formula.NodeType.INVERSION, parseExpression(tokens, token.getPrecedence()));
+
+        } else if (token.isLeftParenthesis()) {
+
+            Formula formula = parseExpression(tokens, 0);
+
+            if (tokens.isEmpty()) {
+                throw new ParserException(String.format("Unexpected end of input, expecting: %s", TokenType.RIGHTPAREN));
+            }
+
+            if (!tokens.remove(0).isRightParenthesis()) {
+                throw new ParserException(String.format("Unexpected token: %s, expecting: %s", token, TokenType.RIGHTPAREN));
+            }
+
+            return formula;
+
+        } else {
+            throw new ParserException(String.format("Unexpected token: %s", token));
+        }
+
+    }
 }

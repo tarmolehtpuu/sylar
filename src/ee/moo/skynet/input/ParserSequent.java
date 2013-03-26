@@ -14,15 +14,6 @@ public class ParserSequent extends Parser {
 
     @Override
     public Formula parse(String input) {
-
-        Lexer lexer = new Lexer(input, alphabet);
-        Token token;
-
-        while ((token = lexer.next()) != null) {
-            System.out.println(token);
-        }
-
         return null;
-
     }
 }

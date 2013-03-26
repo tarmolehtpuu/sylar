@@ -1,5 +1,6 @@
 package ee.moo.skynet.generator;
 
+import ee.moo.skynet.Formula;
 import ee.moo.skynet.alphabet.Alphabet;
 import ee.moo.skynet.alphabet.AlphabetFormula;
 
@@ -125,9 +126,24 @@ public class GeneratorFormula implements Generator {
 
         Generator generator = new GeneratorFormula();
 
-        for (int i = 0; i < 5040; i++) {
-            System.out.println(generator.generate());
+        int i = 0;
+        int j = 0;
+
+        while (i < 5040) {
+
+            j++;
+
+            Formula formula = Formula.parse(generator.generate());
+
+            if (formula.isFalseAlways()) {
+                continue;
+            }
+
+            System.out.println(formula.toString());
+            i++;
         }
+
+        System.out.println(String.format("OK: %d, FALSE: %d (%,.2f%%)", i, j, 100 - (float) i / (float) j * 100));
     }
 
 }

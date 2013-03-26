@@ -1,5 +1,6 @@
 package ee.moo.skynet;
 
+import ee.moo.skynet.alphabet.Alphabet;
 import ee.moo.skynet.alphabet.AlphabetFormula;
 import ee.moo.skynet.alphabet.AlphabetSequent;
 import ee.moo.skynet.input.ParserFormula;
@@ -16,25 +17,43 @@ import java.util.List;
  */
 public class Formula {
 
+    public enum NodeType {
+        STATEMENT,
+        INVERSION,
+        CONJUNCTION,
+        DISJUNCTION,
+        IMPLICATION,
+        EQUIVALENCE
+    }
+
+    private NodeType type;
+
     private Formula left;
     private Formula right;
 
-    private Node node;
+    private String name;
+
+    private boolean data;
 
     public Formula() {
     }
 
-    public Formula(Node node) {
-        this.node = node;
+    public Formula(NodeType type) {
+        this.type = type;
     }
 
-    public Formula(Node node, Formula left) {
-        this.node = node;
+    public Formula(NodeType type, String name) {
+        this.type = type;
+        this.name = name;
+    }
+
+    public Formula(NodeType type, Formula left) {
+        this.type = type;
         this.left = left;
     }
 
-    public Formula(Node node, Formula left, Formula right) {
-        this.node = node;
+    public Formula(NodeType type, Formula left, Formula right) {
+        this.type = type;
         this.left = left;
         this.right = right;
     }
@@ -61,8 +80,8 @@ public class Formula {
             }
         }
 
-        if (node.isStatement() && !statements.contains(node.getName())) {
-            statements.add(node.getName());
+        if (isStatement() && !statements.contains(name)) {
+            statements.add(name);
         }
 
         Collections.sort(statements);
@@ -108,8 +127,8 @@ public class Formula {
             right.setValue(name, value);
         }
 
-        if (node.isStatement() && name.equals(node.getName())) {
-            node.setData(value);
+        if (isStatement() && name.equals(name)) {
+            data = value;
         }
     }
 
@@ -133,12 +152,28 @@ public class Formula {
         this.right = right;
     }
 
-    public Node getNode() {
-        return node;
+    public boolean isStatement() {
+        return type == NodeType.STATEMENT;
     }
 
-    public void setNode(Node node) {
-        this.node = node;
+    public boolean isInversion() {
+        return type == NodeType.INVERSION;
+    }
+
+    public boolean isConjunction() {
+        return type == NodeType.CONJUNCTION;
+    }
+
+    public boolean isDisjunction() {
+        return type == NodeType.DISJUNCTION;
+    }
+
+    public boolean isImplication() {
+        return type == NodeType.IMPLICATION;
+    }
+
+    public boolean isEquivalence() {
+        return type == NodeType.EQUIVALENCE;
     }
 
     public boolean isFalseAlways() {
@@ -181,10 +216,10 @@ public class Formula {
 
     public boolean evaluate() {
 
-        if (node.isStatement()) {
-            return node.getData();
+        if (isStatement()) {
+            return data;
 
-        } else if (node.isInversion()) {
+        } else if (isInversion()) {
 
             return !left.evaluate();
 
@@ -193,25 +228,23 @@ public class Formula {
             boolean a = left.evaluate();
             boolean b = right.evaluate();
 
-            if (node.isConjunction()) {
+            if (isConjunction()) {
                 return a && b;
 
-            } else if (node.isDisjunction()) {
+            } else if (isDisjunction()) {
                 return a || b;
 
-            } else if (node.isImplication()) {
+            } else if (isImplication()) {
                 return !a || b;
 
-            } else if (node.isEquivalence()) {
+            } else if (isEquivalence()) {
                 return a == b;
 
             } else {
-                throw new RuntimeException(String.format("Unknown node type: %s", node.getType()));
+                throw new RuntimeException(String.format("Unknown node type: %s", type));
 
             }
-
         }
-
     }
 
     @Override
@@ -219,20 +252,52 @@ public class Formula {
 
         StringBuilder builder = new StringBuilder();
 
+        Alphabet alphabet = new AlphabetFormula();
+
+        if (isInversion()) {
+            builder.append(alphabet.getSymbolInversion());
+        }
+
         if (left != null) {
-            builder.append('(');
+            builder.append(alphabet.getSymbolLeftParenthesis());
             builder.append(left.toString());
         }
 
-        if (node.isStatement()) {
-            builder.append(node.getName());
+        if (isStatement()) {
+            builder.append(name);
         } else {
-            builder.append(node.getTypeString());
+
+
+            switch (type) {
+
+                case INVERSION:
+                    break;
+
+                case CONJUNCTION:
+                    builder.append(alphabet.getSymbolConjunction());
+                    break;
+
+                case DISJUNCTION:
+                    builder.append(alphabet.getSymbolDisjunction());
+                    break;
+
+                case IMPLICATION:
+                    builder.append(alphabet.getSymbolImplication());
+                    break;
+
+                case EQUIVALENCE:
+                    builder.append(alphabet.getSymbolEquivalence());
+                    break;
+
+                default:
+                    throw new FormulaException(String.format("Unexpected node type: %s", type));
+            }
+
         }
 
         if (right != null) {
             builder.append(right.toString());
-            builder.append(')');
+            builder.append(alphabet.getSymbolRightParenthesis());
         }
 
         return builder.toString();
@@ -255,7 +320,7 @@ public class Formula {
 
     public static void main(String[] args) {
 
-        Formula formula = Formula.parse("((A & B) ⇔ (C v D))");
+        Formula formula = Formula.parse("((!A & B) ⇔ (C v D))");
 
         System.out.println(formula.isTrueAlways());
         System.out.println(formula.isFalseAlways());
