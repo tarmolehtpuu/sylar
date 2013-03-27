@@ -265,8 +265,8 @@ public class Formula {
 
         if (isStatement()) {
             builder.append(name);
-        } else {
 
+        } else {
 
             switch (type) {
 
@@ -296,8 +296,10 @@ public class Formula {
         }
 
         if (right != null) {
+
             builder.append(right.toString());
             builder.append(alphabet.getSymbolRightParenthesis());
+
         } else {
 
             if (isInversion()) {
