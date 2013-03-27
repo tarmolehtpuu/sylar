@@ -68,7 +68,10 @@ public class ParserSequent extends Parser {
             throw new ParserException(String.format("Expecting end of input: %d token(s) remaining", right.size()));
         }
 
-        if (lhs == null) {
+        if (lhs == null && rhs == null) {
+            throw new ParserException("Empty sequent!");
+
+        } else if (lhs == null) {
             return rhs;
 
         } else if (rhs == null) {
