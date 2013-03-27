@@ -66,7 +66,7 @@ public class ParserFormula extends Parser {
                 throw new ParserException("Unexpected end of input");
             }
 
-            formula = new Formula(token.getNodeType(), formula, parseExpression(tokens, token.getPrecedence()));
+            formula = new Formula(token.getNodeType(Token.Side.NONE), formula, parseExpression(tokens, token.getPrecedence()));
 
 
         }

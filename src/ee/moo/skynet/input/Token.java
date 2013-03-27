@@ -9,6 +9,12 @@ import ee.moo.skynet.Formula;
  */
 public class Token {
 
+    public enum Side {
+        LHS,
+        RHS,
+        NONE
+    }
+
     private TokenType type;
 
     private String data;
@@ -35,18 +41,21 @@ public class Token {
         switch (type) {
 
             case INVERSION:
-                return 5;
+                return 6;
 
             case CONJUNCTION:
-                return 4;
+                return 5;
 
             case DISJUNCTION:
-                return 3;
+                return 4;
 
             case IMPLICATION:
-                return 2;
+                return 3;
 
             case EQUIVALENCE:
+                return 2;
+
+            case COMMA:
                 return 1;
 
             default:
@@ -54,7 +63,7 @@ public class Token {
         }
     }
 
-    public Formula.NodeType getNodeType() {
+    public Formula.NodeType getNodeType(Side side) {
 
         switch (type) {
 
@@ -76,9 +85,22 @@ public class Token {
             case EQUIVALENCE:
                 return Formula.NodeType.EQUIVALENCE;
 
+            case COMMA:
+
+                switch (side) {
+                    case LHS:
+                        return Formula.NodeType.CONJUNCTION;
+
+                    case RHS:
+                        return Formula.NodeType.DISJUNCTION;
+
+                    case NONE:
+                        throw new ParserException(String.format("Unable to determine token type for %s, unknown side %s", type, side));
+                }
+
+
             default:
                 throw new ParserException(String.format("Unable to convert %s to Formula.NodeType.", type));
-
         }
     }
 
@@ -131,7 +153,9 @@ public class Token {
         return type == TokenType.CONJUNCTION
                 || type == TokenType.DISJUNCTION
                 || type == TokenType.IMPLICATION
-                || type == TokenType.EQUIVALENCE;
+                || type == TokenType.EQUIVALENCE
+                || type == TokenType.COMMA
+                || type == TokenType.SEQUENT;
 
     }
 
