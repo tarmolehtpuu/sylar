@@ -26,11 +26,11 @@ public class ParserSequent extends Parser {
 
         while ((token = lexer.next()) != null) {
 
-            if (token.getType() == TokenType.WHITESPACE) {
+            if (token.isWhitespace()) {
                 continue;
             }
 
-            if (token.getType() == TokenType.SEQUENT) {
+            if (token.isSequent()) {
                 sequent++;
 
             } else if (sequent == 0) {
