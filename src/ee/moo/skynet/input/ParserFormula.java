@@ -23,7 +23,7 @@ public class ParserFormula extends Parser {
 
         while ((token = lexer.next()) != null) {
 
-            if (token.isWhitespace()) {
+            if (!token.isWhitespace()) {
                 tokens.add(token);
             }
 
