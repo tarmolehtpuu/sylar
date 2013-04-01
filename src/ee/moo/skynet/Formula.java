@@ -152,6 +152,38 @@ public class Formula {
         this.right = right;
     }
 
+    public String getName() {
+
+        Alphabet alphabet = new AlphabetFormula();
+
+        if (isStatement()) {
+            return name;
+
+        } else if (isInversion()) {
+            return alphabet.getSymbolInversionString();
+
+        } else if (isConjunction()) {
+            return alphabet.getSymbolConjunctionString();
+
+        } else if (isDisjunction()) {
+            return alphabet.getSymbolDisjunctionString();
+
+        } else if (isImplication()) {
+            return alphabet.getSymbolImplicationString();
+
+        } else if (isEquivalence()) {
+            return alphabet.getSymbolEquivalenceString();
+
+        } else {
+            throw new FormulaException(String.format("Unknown node type: %s", type));
+
+        }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public boolean isStatement() {
         return type == NodeType.STATEMENT;
     }

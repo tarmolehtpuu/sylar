@@ -1,5 +1,7 @@
 package ee.moo.skynet.alphabet;
 
+import ee.moo.skynet.util.StringUtil;
+
 /**
  * User: tarmo
  * Date: 3/23/13
@@ -11,7 +13,7 @@ public abstract class Alphabet {
 
     public boolean isValid(String s) {
 
-        if (s == null || s.length() == 0) {
+        if (StringUtil.isEmpty(s)) {
             return false;
         }
 

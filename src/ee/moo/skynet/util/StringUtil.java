@@ -1,11 +1,20 @@
 package ee.moo.skynet.util;
 
+import java.util.Random;
+
 /**
  * User: tarmo
  * Date: 3/23/13
  * Time: 11:40 PM
  */
 public class StringUtil {
+
+    private static final Random RANDOM = new Random();
+    private static final char[] ALPHABET;
+
+    static {
+        ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+    }
 
     public static boolean isEmpty(String s) {
         return s == null || s.length() == 0;
@@ -37,5 +46,16 @@ public class StringUtil {
             return s2.equalsIgnoreCase(s1);
 
         }
+    }
+
+    public static String random(int length) {
+
+        StringBuilder result = new StringBuilder(length);
+
+        while (result.length() < length) {
+            result.append(ALPHABET[RANDOM.nextInt(ALPHABET.length)]);
+        }
+
+        return result.toString();
     }
 }
