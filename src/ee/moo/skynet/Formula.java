@@ -358,21 +358,4 @@ public class Formula {
 
     }
 
-    public static void main(String[] args) {
-
-        String[] formulas = new String[]{
-                "A v B & C",
-                "A & B v C",
-                "!A & B v C",
-                "A & !B v C",
-                "A & B & C ↔ B & C & D",
-                "A v B ↔ B & C v D",
-                "A & B ⊃ !C & D"
-        };
-
-        for (String input : formulas) {
-            System.out.println(String.format("%s = %s", input, Formula.parse(input)));
-        }
-
-    }
 }
