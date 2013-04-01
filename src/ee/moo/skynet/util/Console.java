@@ -2,6 +2,8 @@ package ee.moo.skynet.util;
 
 import ee.moo.skynet.Formula;
 import ee.moo.skynet.FormulaException;
+import ee.moo.skynet.generator.GeneratorFormula;
+import ee.moo.skynet.generator.GeneratorSequent;
 import ee.moo.skynet.output.SerializerDot;
 
 import java.io.FileNotFoundException;
@@ -27,6 +29,14 @@ public class Console {
 
     public static Formula eval(String input) {
         return Formula.parse(input);
+    }
+
+    public static String generateF() {
+        return new GeneratorFormula().generate();
+    }
+
+    public static String generateS() {
+        return new GeneratorSequent().generate();
     }
 
     public static void print(String input) {
