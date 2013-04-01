@@ -48,6 +48,29 @@ public class StringUtil {
         }
     }
 
+    public static String lpad(String string, int length, char pad) {
+
+        StringBuilder builder = new StringBuilder(string);
+
+        while (builder.length() < length) {
+            builder.insert(0, pad);
+        }
+
+        return builder.toString();
+    }
+
+    public static String rpad(String string, int length, char pad) {
+
+        StringBuilder builder = new StringBuilder(string);
+
+        while (builder.length() < length) {
+            builder.append(pad);
+        }
+
+        return builder.toString();
+
+    }
+
     public static String random(int length) {
 
         StringBuilder result = new StringBuilder(length);
