@@ -15,6 +15,16 @@ import java.io.IOException;
  */
 public class Console {
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
     public static Formula eval(String input) {
         return Formula.parse(input);
     }
@@ -29,6 +39,60 @@ public class Console {
 
     public static void plot(String input) {
         plot(Formula.parse(input));
+    }
+
+    public static void interpret(String input) {
+        interpret(Formula.parse(input));
+    }
+
+    public static void interpret(Formula formula) {
+
+        String[] statements = formula.getStatements();
+
+        StringBuilder builder = new StringBuilder();
+
+        for (String statement : statements) {
+            builder.append(ANSI_YELLOW);
+            builder.append(statement);
+            builder.append(ANSI_RESET);
+            builder.append(' ');
+        }
+
+        builder.append('=');
+        builder.append(' ');
+        builder.append(ANSI_YELLOW);
+        builder.append("OUT");
+        builder.append(ANSI_RESET);
+        builder.append("\n");
+
+        for (int[] permutation : formula.getStatementPermutations()) {
+
+            for (int i = 0; i < statements.length; i++) {
+                formula.setValue(statements[i], permutation[i]);
+                builder.append(StringUtil.rpad(String.valueOf(permutation[i]), statements[i].length(), ' '));
+                builder.append(' ');
+            }
+
+            builder.append('=');
+            builder.append(' ');
+
+            if (formula.evaluate()) {
+
+                builder.append(ANSI_GREEN);
+                builder.append('1');
+                builder.append(ANSI_RESET);
+
+            } else {
+
+                builder.append(ANSI_RED);
+                builder.append('0');
+                builder.append(ANSI_RESET);
+            }
+
+            builder.append("\n");
+        }
+
+        System.out.println(builder.toString());
     }
 
     public static void plot(Formula formula) {
