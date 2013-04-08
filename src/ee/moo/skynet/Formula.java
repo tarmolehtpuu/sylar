@@ -5,6 +5,7 @@ import ee.moo.skynet.alphabet.AlphabetFormula;
 import ee.moo.skynet.alphabet.AlphabetSequent;
 import ee.moo.skynet.input.ParserFormula;
 import ee.moo.skynet.input.ParserSequent;
+import ee.moo.skynet.util.BinaryUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,34 +88,6 @@ public class Formula {
         Collections.sort(statements);
 
         return statements.toArray(new String[statements.size()]);
-    }
-
-    public int[][] getStatementPermutations() {
-
-        String[] statements = getStatements();
-
-        int[][] permutations = new int[(int) Math.pow(2, statements.length)][statements.length];
-
-        for (int i = 0; i < permutations.length; i++) {
-
-            StringBuilder builder = new StringBuilder(Integer.toBinaryString(i));
-
-            while (builder.length() < statements.length) {
-                builder.insert(0, 0);
-            }
-
-            for (int j = 0; j < permutations[i].length; j++) {
-
-                if (builder.charAt(j) == '1') {
-                    permutations[i][j] = 1;
-                } else {
-                    permutations[i][j] = 0;
-                }
-
-            }
-        }
-
-        return permutations;
     }
 
     public void setValue(String name, boolean value) {
@@ -212,7 +185,7 @@ public class Formula {
 
         String[] statements = getStatements();
 
-        for (int[] permutation : getStatementPermutations()) {
+        for (int[] permutation : BinaryUtil.permutations(statements.length)) {
 
             for (int i = 0; i < statements.length; i++) {
                 setValue(statements[i], permutation[i]);
@@ -231,7 +204,7 @@ public class Formula {
 
         String[] statements = getStatements();
 
-        for (int[] permutation : getStatementPermutations()) {
+        for (int[] permutation : BinaryUtil.permutations(statements.length)) {
 
             for (int i = 0; i < statements.length; i++) {
                 setValue(statements[i], permutation[i]);

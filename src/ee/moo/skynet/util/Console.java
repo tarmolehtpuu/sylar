@@ -75,7 +75,7 @@ public class Console {
         builder.append(ANSI_RESET);
         builder.append("\n");
 
-        for (int[] permutation : formula.getStatementPermutations()) {
+        for (int[] permutation : BinaryUtil.permutations(statements.length)) {
 
             for (int i = 0; i < statements.length; i++) {
                 formula.setValue(statements[i], permutation[i]);
