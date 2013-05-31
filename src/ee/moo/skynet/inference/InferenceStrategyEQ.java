@@ -4,7 +4,6 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.BinaryUtil;
 import ee.moo.skynet.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +27,13 @@ public class InferenceStrategyEQ extends InferenceStrategy {
         List<String> unknownRhs = getUnknown(formula.getRight(), values);
 
         // we keep an history of unknown variable values
-        Map<String, List<Integer>> history = new HashMap<String, List<Integer>>();
-
+        Map<String, List<Integer>> history = null;
 
         if (isAlwaysTrue(formula.getLeft(), values)) {
 
             // LHS is always true, RHS should always be true
 
-            for (String name : unknownRhs) {
-                history.put(name, new ArrayList<Integer>());
-            }
+            history = getHistoryContainer(unknownRhs);
 
             for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
 
@@ -67,9 +63,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             // LHS is always false, RHS should always be false
 
-            for (String name : unknownRhs) {
-                history.put(name, new ArrayList<Integer>());
-            }
+            history = getHistoryContainer(unknownRhs);
 
             for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
 
@@ -98,9 +92,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             // RHS is always true, LHS should always be true
 
-            for (String name : unknownLhs) {
-                history.put(name, new ArrayList<Integer>());
-            }
+            history = getHistoryContainer(unknownLhs);
 
             for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
 
@@ -130,9 +122,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             // RHS is always false, LHS should always be false
 
-            for (String name : unknownLhs) {
-                history.put(name, new ArrayList<Integer>());
-            }
+            history = getHistoryContainer(unknownLhs);
 
             for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
 
@@ -162,33 +152,36 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
         // unknowns that have a fixed value will be considered found
 
-        for (String key : history.keySet()) {
+        if (history != null) {
 
-            if (history.get(key).size() > 0) {
+            for (String key : history.keySet()) {
 
-                boolean onlyT = true;
-                boolean onlyF = true;
+                if (history.get(key).size() > 0) {
 
-                for (Integer i : history.get(key)) {
+                    boolean onlyT = true;
+                    boolean onlyF = true;
 
-                    if (i == 1) {
-                        onlyF = false;
+                    for (Integer i : history.get(key)) {
+
+                        if (i == 1) {
+                            onlyF = false;
+                        }
+
+                        if (i == 0) {
+                            onlyT = false;
+                        }
                     }
 
-                    if (i == 0) {
-                        onlyT = false;
+                    if (onlyF) {
+                        result.set(key, 0);
+
+                    } else if (onlyT) {
+                        result.set(key, 1);
+
+                    } else {
+                        result.set(key, -1);
+
                     }
-                }
-
-                if (onlyF) {
-                    result.set(key, 0);
-
-                } else if (onlyT) {
-                    result.set(key, 1);
-
-                } else {
-                    result.set(key, -1);
-
                 }
             }
         }

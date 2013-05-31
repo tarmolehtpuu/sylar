@@ -4,7 +4,6 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.BinaryUtil;
 import ee.moo.skynet.util.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,12 +59,7 @@ public class InferenceStrategyMT extends InferenceStrategy {
         }
 
         // we keep an history of unknown variable values for the LHS
-        Map<String, List<Integer>> history = new HashMap<String, List<Integer>>();
-
-        for (String name : unknown) {
-            history.put(name, new ArrayList<Integer>());
-        }
-
+        Map<String, List<Integer>> history = getHistoryContainer(unknown);
 
         for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
 

@@ -4,6 +4,7 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.BinaryUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +90,17 @@ public abstract class InferenceStrategy {
         }
 
         return true;
+    }
+
+    protected Map<String, List<Integer>> getHistoryContainer(List<String> values) {
+
+        Map<String, List<Integer>> history = new HashMap<String, List<Integer>>(values.size());
+
+        for (String value : values) {
+            history.put(value, new ArrayList<Integer>());
+        }
+
+        return history;
     }
 
 }
