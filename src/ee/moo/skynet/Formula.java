@@ -6,6 +6,7 @@ import ee.moo.skynet.alphabet.AlphabetSequent;
 import ee.moo.skynet.input.ParserFormula;
 import ee.moo.skynet.input.ParserSequent;
 import ee.moo.skynet.util.BinaryUtil;
+import ee.moo.skynet.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +58,33 @@ public class Formula {
         this.type = type;
         this.left = left;
         this.right = right;
+    }
+
+    public Boolean getValue(String name) {
+
+        Boolean value = null;
+
+        if (left != null) {
+            value = left.getValue(name);
+
+            if (value != null) {
+                return value;
+            }
+        }
+
+        if (right != null) {
+            value = right.getValue(name);
+
+            if (value != null) {
+                return value;
+            }
+        }
+
+        if (isStatement() && StringUtil.equals(name, this.name)) {
+            return this.data;
+        }
+
+        return null;
     }
 
     public String[] getStatements() {
