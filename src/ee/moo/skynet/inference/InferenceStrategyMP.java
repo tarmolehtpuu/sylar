@@ -160,11 +160,12 @@ public class InferenceStrategyMP implements InferenceStrategy {
 
     public static void main(String[] args) {
 
-        Formula f = Formula.parse("AvB⊃CvD");
+        Formula f = Formula.parse("A&B⊃Cv!D");
 
         Map<String, Integer> values = new HashMap<String, Integer>();
 
         values.put("A", 1);
+        values.put("B", 1);
         values.put("C", 0);
 
         InferenceResult result = new InferenceStrategyMP().apply(f, values);
