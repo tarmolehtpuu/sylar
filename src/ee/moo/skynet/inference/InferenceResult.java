@@ -20,7 +20,7 @@ public class InferenceResult {
         }
     }
 
-    public Integer get(String name) {
+    public int get(String name) {
         return data.get(name);
     }
 
@@ -39,6 +39,10 @@ public class InferenceResult {
 
     public void set(String name, Integer value) {
         data.put(name, value);
+    }
+
+    public int size() {
+        return data.size();
     }
 
     public boolean contains(String name) {

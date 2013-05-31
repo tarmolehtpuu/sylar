@@ -124,14 +124,11 @@ public class InferenceStrategyMP extends InferenceStrategy {
 
     public static void main(String[] args) {
 
-        Formula f = Formula.parse("A&BvE⊃CvD");
+        Formula f = Formula.parse("AvB⊃C&D");
 
         Map<String, Integer> values = new HashMap<String, Integer>();
 
         values.put("A", 1);
-        values.put("B", 0);
-        values.put("C", 0);
-        values.put("E", 1);
 
         InferenceResult result = new InferenceStrategyMP().apply(f, values);
 
