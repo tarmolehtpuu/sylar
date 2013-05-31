@@ -14,38 +14,18 @@ import java.util.Map;
  * Date: 5/31/13
  * Time: 1:58 PM
  */
-public class InferenceStrategyEQ implements InferenceStrategy {
+public class InferenceStrategyEQ extends InferenceStrategy {
 
     @Override
     public InferenceResult apply(Formula formula, Map<String, Integer> values) {
 
-        InferenceResult result = new InferenceResult();
-
-        // all the known values, will be known also after inference
-
-        for (String statement : values.keySet()) {
-            result.set(statement, values.get(statement));
-        }
+        InferenceResult result = new InferenceResult(values);
 
         Formula lhs = formula.getLeft();
         Formula rhs = formula.getRight();
 
-        List<String> unknownLhs = new ArrayList<String>();
-        List<String> unknownRhs = new ArrayList<String>();
-
-        // figure out the unknown values for LHS
-        for (String statement : lhs.getStatements()) {
-            if (!values.containsKey(statement)) {
-                unknownLhs.add(statement);
-            }
-        }
-
-        // figure out the unknown values for RHS
-        for (String statement : rhs.getStatements()) {
-            if (!values.containsKey(statement)) {
-                unknownRhs.add(statement);
-            }
-        }
+        List<String> unknownLhs = getUnknown(formula.getLeft(), values);
+        List<String> unknownRhs = getUnknown(formula.getRight(), values);
 
         // we keep an history of unknown variable values
         Map<String, List<Integer>> history = new HashMap<String, List<Integer>>();
@@ -225,67 +205,6 @@ public class InferenceStrategyEQ implements InferenceStrategy {
         return result;
     }
 
-    private boolean isAlwaysTrue(Formula formula, Map<String, Integer> values) {
-
-        List<String> unknown = new ArrayList<String>();
-
-        // figure out the unknown values for LHS
-        for (String statement : formula.getStatements()) {
-            if (!values.containsKey(statement)) {
-                unknown.add(statement);
-            }
-        }
-
-        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
-
-            // set known values
-            for (String key : values.keySet()) {
-                formula.setValue(key, values.get(key));
-            }
-
-            // set unknown values from permutations
-            for (int i = 0; i < permutation.length; i++) {
-                formula.setValue(unknown.get(i), permutation[i]);
-            }
-
-            if (!formula.evaluate()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isAlwaysFalse(Formula formula, Map<String, Integer> values) {
-
-        List<String> unknown = new ArrayList<String>();
-
-        // figure out the unknown values for LHS
-        for (String statement : formula.getStatements()) {
-            if (!values.containsKey(statement)) {
-                unknown.add(statement);
-            }
-        }
-
-        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
-
-            // set known values
-            for (String key : values.keySet()) {
-                formula.setValue(key, values.get(key));
-            }
-
-            // set unknown values from permutations
-            for (int i = 0; i < permutation.length; i++) {
-                formula.setValue(unknown.get(i), permutation[i]);
-            }
-
-            if (formula.evaluate()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     public static void main(String[] args) {
 
@@ -293,7 +212,7 @@ public class InferenceStrategyEQ implements InferenceStrategy {
 
         Map<String, Integer> values = new HashMap<String, Integer>();
 
-        values.put("P", 0);
+        values.put("P", 1);
 
         InferenceResult result = new InferenceStrategyEQ().apply(f, values);
 

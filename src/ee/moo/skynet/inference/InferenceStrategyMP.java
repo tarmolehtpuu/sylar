@@ -14,7 +14,7 @@ import java.util.Map;
  * Date: 5/31/13
  * Time: 1:57 PM
  */
-public class InferenceStrategyMP implements InferenceStrategy {
+public class InferenceStrategyMP extends InferenceStrategy {
 
     @Override
     public InferenceResult apply(Formula formula, Map<String, Integer> values) {
@@ -24,22 +24,8 @@ public class InferenceStrategyMP implements InferenceStrategy {
         Formula lhs = formula.getLeft();
         Formula rhs = formula.getRight();
 
-        List<String> unknownLhs = new ArrayList<String>();
-        List<String> unknownRhs = new ArrayList<String>();
-
-        // figure out the unknown values for LHS
-        for (String statement : formula.getLeft().getStatements()) {
-            if (!values.containsKey(statement)) {
-                unknownLhs.add(statement);
-            }
-        }
-
-        // figure out the unknown values for RHS
-        for (String statement : formula.getRight().getStatements()) {
-            if (!values.containsKey(statement)) {
-                unknownRhs.add(statement);
-            }
-        }
+        List<String> unknownLhs = getUnknown(formula.getLeft(), values);
+        List<String> unknownRhs = getUnknown(formula.getRight(), values);
 
         // no unknowns in RHS, no need to try to infere anything
         if (unknownRhs.isEmpty()) {
@@ -54,31 +40,18 @@ public class InferenceStrategyMP implements InferenceStrategy {
 
         // detect if LHS is always true, based on already known values
 
-        for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
+        if (!isAlwaysTrue(lhs, values)) {
 
-            // set known values
-            for (String key : values.keySet()) {
-                lhs.setValue(key, values.get(key));
-            }
+            // found an interpretation that isn't true, therefore we consider
+            // the inference as a failure and we can stop here
 
-            // set unknown values from permutation
-            for (int i = 0; i < permutation.length; i++) {
-                lhs.setValue(unknownLhs.get(i), permutation[i]);
-            }
-
-            if (!lhs.evaluate()) {
-
-                // found an interpretation that isn't true, therefore we consider
-                // the inference as a failure and we can stop here
-
-                for (String statement : formula.getStatements()) {
-                    if (!result.contains(statement)) {
-                        result.set(statement, -1);
-                    }
+            for (String statement : formula.getStatements()) {
+                if (!result.contains(statement)) {
+                    result.set(statement, -1);
                 }
-
-                return result;
             }
+
+            return result;
         }
 
         // inference is most likely successful, fill in the missing unknowns for LHS
@@ -123,29 +96,32 @@ public class InferenceStrategyMP implements InferenceStrategy {
 
         for (String key : history.keySet()) {
 
-            boolean onlyT = true;
-            boolean onlyF = true;
+            if (history.get(key).size() > 0) {
 
-            for (Integer i : history.get(key)) {
+                boolean onlyT = true;
+                boolean onlyF = true;
 
-                if (i == 1) {
-                    onlyF = false;
+                for (Integer i : history.get(key)) {
+
+                    if (i == 1) {
+                        onlyF = false;
+                    }
+
+                    if (i == 0) {
+                        onlyT = false;
+                    }
                 }
 
-                if (i == 0) {
-                    onlyT = false;
+                if (onlyF) {
+                    result.set(key, 0);
+
+                } else if (onlyT) {
+                    result.set(key, 1);
+
+                } else {
+                    result.set(key, -1);
+
                 }
-            }
-
-            if (onlyF) {
-                result.set(key, 0);
-
-            } else if (onlyT) {
-                result.set(key, 1);
-
-            } else {
-                result.set(key, -1);
-
             }
         }
 
@@ -154,13 +130,14 @@ public class InferenceStrategyMP implements InferenceStrategy {
 
     public static void main(String[] args) {
 
-        Formula f = Formula.parse("A&B⊃CvD");
+        Formula f = Formula.parse("A&BvE⊃CvD");
 
         Map<String, Integer> values = new HashMap<String, Integer>();
 
         values.put("A", 1);
-        values.put("B", 1);
+        values.put("B", 0);
         values.put("C", 0);
+        values.put("E", 1);
 
         InferenceResult result = new InferenceStrategyMP().apply(f, values);
 
