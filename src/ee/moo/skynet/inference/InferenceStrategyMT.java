@@ -24,11 +24,10 @@ public class InferenceStrategyMT extends InferenceStrategy {
         Formula lhs = formula.getLeft();
         Formula rhs = formula.getRight();
 
-        List<String> unknownLhs = getUnknown(formula.getLeft(), values);
-        List<String> unknownRhs = getUnknown(formula.getRight(), values);
+        List<String> unknown = getUnknown(formula.getLeft(), values);
 
         // no unknowns in LHS, no need to try to infere anything
-        if (unknownLhs.isEmpty()) {
+        if (unknown.isEmpty()) {
             for (String statement : formula.getStatements()) {
                 if (!result.contains(statement)) {
                     result.set(statement, -1);
@@ -63,12 +62,12 @@ public class InferenceStrategyMT extends InferenceStrategy {
         // we keep an history of unknown variable values for the LHS
         Map<String, List<Integer>> history = new HashMap<String, List<Integer>>();
 
-        for (String name : unknownLhs) {
+        for (String name : unknown) {
             history.put(name, new ArrayList<Integer>());
         }
 
 
-        for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
+        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
 
             // set known values for LHS
             for (String key : values.keySet()) {
@@ -77,7 +76,7 @@ public class InferenceStrategyMT extends InferenceStrategy {
 
             // set unknown values for LHS based on permutations
             for (int i = 0; i < permutation.length; i++) {
-                lhs.setValue(unknownLhs.get(i), permutation[i]);
+                lhs.setValue(unknown.get(i), permutation[i]);
             }
 
             if (!lhs.evaluate()) {
@@ -85,7 +84,7 @@ public class InferenceStrategyMT extends InferenceStrategy {
                 // if lhs evaluates to false track history for each unknown variable
 
                 for (int i = 0; i < permutation.length; i++) {
-                    history.get(unknownLhs.get(i)).add(permutation[i]);
+                    history.get(unknown.get(i)).add(permutation[i]);
                 }
 
             }

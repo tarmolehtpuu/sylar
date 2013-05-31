@@ -24,11 +24,10 @@ public class InferenceStrategyMP extends InferenceStrategy {
         Formula lhs = formula.getLeft();
         Formula rhs = formula.getRight();
 
-        List<String> unknownLhs = getUnknown(formula.getLeft(), values);
-        List<String> unknownRhs = getUnknown(formula.getRight(), values);
+        List<String> unknown = getUnknown(formula.getRight(), values);
 
         // no unknowns in RHS, no need to try to infere anything
-        if (unknownRhs.isEmpty()) {
+        if (unknown.isEmpty()) {
             for (String statement : formula.getStatements()) {
                 if (!result.contains(statement)) {
                     result.set(statement, -1);
@@ -65,11 +64,11 @@ public class InferenceStrategyMP extends InferenceStrategy {
         // we keep an history of unknown variable values for the rhs
         Map<String, List<Integer>> history = new HashMap<String, List<Integer>>();
 
-        for (String name : unknownRhs) {
+        for (String name : unknown) {
             history.put(name, new ArrayList<Integer>());
         }
 
-        for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
+        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
 
             // set known values for RHS
             for (String key : values.keySet()) {
@@ -78,7 +77,7 @@ public class InferenceStrategyMP extends InferenceStrategy {
 
             // set unknown values for RHS based on permutations
             for (int i = 0; i < permutation.length; i++) {
-                rhs.setValue(unknownRhs.get(i), permutation[i]);
+                rhs.setValue(unknown.get(i), permutation[i]);
             }
 
             if (rhs.evaluate()) {
@@ -86,7 +85,7 @@ public class InferenceStrategyMP extends InferenceStrategy {
                 // if RHS evaluates to true track history for each unknown variable
 
                 for (int i = 0; i < permutation.length; i++) {
-                    history.get(unknownRhs.get(i)).add(permutation[i]);
+                    history.get(unknown.get(i)).add(permutation[i]);
                 }
 
             }
