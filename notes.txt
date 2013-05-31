@@ -1,0 +1,6 @@
+Meil on fikseeritud tõeväärtusega valemid, ehk valemid mille tõeväärtus ei olene sinna kuuluvate indiviidsümbolite,
+predikaat- ja funktsionaalsümbolite interpretatsioonidest.
+
+-> A           A -> B
+---------------------
+         -B
