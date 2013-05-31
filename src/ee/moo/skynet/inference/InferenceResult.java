@@ -11,6 +11,15 @@ public class InferenceResult {
 
     private Map<String, Integer> data = new HashMap<String, Integer>();
 
+    public InferenceResult() {
+    }
+
+    public InferenceResult(Map<String, Integer> values) {
+        for (String key : values.keySet()) {
+            data.put(key, values.get(key));
+        }
+    }
+
     public Integer get(String name) {
         return data.get(name);
     }

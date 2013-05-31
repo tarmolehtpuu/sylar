@@ -1,6 +1,6 @@
 package ee.moo.skynet.inference;
 
-import ee.moo.skynet.Formula;
+import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.BinaryUtil;
 import ee.moo.skynet.util.StringUtil;
 

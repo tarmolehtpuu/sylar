@@ -1,7 +1,7 @@
 package ee.moo.skynet.util;
 
-import ee.moo.skynet.Formula;
-import ee.moo.skynet.FormulaException;
+import ee.moo.skynet.formula.Formula;
+import ee.moo.skynet.formula.FormulaException;
 import ee.moo.skynet.generator.GeneratorFormula;
 import ee.moo.skynet.generator.GeneratorSequent;
 import ee.moo.skynet.output.SerializerDot;

@@ -1,6 +1,6 @@
 package ee.moo.skynet.generator;
 
-import ee.moo.skynet.Formula;
+import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.alphabet.AlphabetSequent;
 
 import java.util.*;

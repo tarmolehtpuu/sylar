@@ -1,6 +1,6 @@
 package ee.moo.skynet.inference;
 
-import ee.moo.skynet.Formula;
+import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.BinaryUtil;
 import ee.moo.skynet.util.StringUtil;
 
@@ -19,13 +19,7 @@ public class InferenceStrategyMP implements InferenceStrategy {
     @Override
     public InferenceResult apply(Formula formula, Map<String, Integer> values) {
 
-        InferenceResult result = new InferenceResult();
-
-        // all the known values, will be known also after inference
-
-        for (String statement : values.keySet()) {
-            result.set(statement, values.get(statement));
-        }
+        InferenceResult result = new InferenceResult(values);
 
         Formula lhs = formula.getLeft();
         Formula rhs = formula.getRight();
@@ -160,7 +154,7 @@ public class InferenceStrategyMP implements InferenceStrategy {
 
     public static void main(String[] args) {
 
-        Formula f = Formula.parse("A&B⊃Cv!D");
+        Formula f = Formula.parse("A&B⊃CvD");
 
         Map<String, Integer> values = new HashMap<String, Integer>();
 

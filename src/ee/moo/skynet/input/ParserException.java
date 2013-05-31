@@ -1,6 +1,6 @@
 package ee.moo.skynet.input;
 
-import ee.moo.skynet.FormulaException;
+import ee.moo.skynet.formula.FormulaException;
 
 /**
  * User: tarmo

@@ -1,6 +1,6 @@
 package ee.moo.skynet.output;
 
-import ee.moo.skynet.Formula;
+import ee.moo.skynet.formula.Formula;
 
 import java.util.HashMap;
 import java.util.Map;

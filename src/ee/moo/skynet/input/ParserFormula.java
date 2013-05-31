@@ -1,6 +1,6 @@
 package ee.moo.skynet.input;
 
-import ee.moo.skynet.Formula;
+import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.alphabet.AlphabetFormula;
 
 import java.util.ArrayList;

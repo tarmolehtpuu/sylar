@@ -1,4 +1,4 @@
-package ee.moo.skynet;
+package ee.moo.skynet.formula;
 
 import ee.moo.skynet.util.BinaryUtil;
 
