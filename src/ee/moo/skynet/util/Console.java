@@ -4,11 +4,17 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.formula.FormulaException;
 import ee.moo.skynet.generator.GeneratorFormula;
 import ee.moo.skynet.generator.GeneratorSequent;
+import ee.moo.skynet.inference.InferenceResult;
+import ee.moo.skynet.inference.InferenceStrategyEQ;
+import ee.moo.skynet.inference.InferenceStrategyMP;
+import ee.moo.skynet.inference.InferenceStrategyMT;
 import ee.moo.skynet.output.SerializerDot;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: tarmo
@@ -103,6 +109,179 @@ public class Console {
         }
 
         System.out.println(builder.toString());
+    }
+
+    public static void infer(Formula formula, String values) {
+
+        InferenceResult resultEQ = null;
+        InferenceResult resultMP = null;
+        InferenceResult resultMT = null;
+
+        if (formula.isEquivalence()) {
+            resultEQ = new InferenceStrategyEQ().apply(formula, decode(values));
+        }
+
+        if (formula.isImplication()) {
+            resultMP = new InferenceStrategyMP().apply(formula, decode(values));
+            resultMT = new InferenceStrategyMT().apply(formula, decode(values));
+        }
+
+        InferenceResult header = null;
+
+        if (resultEQ != null) {
+            header = resultEQ;
+        } else if (resultMP != null) {
+            header = resultMP;
+        } else if (resultMT != null) {
+            header = resultMT;
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        // write header
+
+        if (header != null) {
+
+            builder.append("    ");
+
+            for (String name : header.getNames()) {
+                builder.append(ANSI_CYAN);
+                builder.append(StringUtil.lpad(name, 3, ' '));
+                builder.append(ANSI_RESET);
+            }
+
+            builder.append("\n");
+        }
+
+        // write EQ
+
+        if (resultEQ != null) {
+
+            builder.append(ANSI_CYAN);
+            builder.append("EQ: ");
+            builder.append(ANSI_RESET);
+
+            for (String name : resultEQ.getNames()) {
+
+                switch (resultEQ.get(name)) {
+
+                    case -1:
+                        builder.append(ANSI_YELLOW);
+                        builder.append(StringUtil.lpad("-1", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+
+                    case 0:
+                        builder.append(ANSI_RED);
+                        builder.append(StringUtil.lpad("0", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+
+                    case 1:
+                        builder.append(ANSI_GREEN);
+                        builder.append(StringUtil.lpad("1", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+                }
+            }
+
+            builder.append("\n");
+        }
+
+        // write MP
+
+        if (resultMP != null) {
+
+            builder.append(ANSI_CYAN);
+            builder.append("MP: ");
+            builder.append(ANSI_RESET);
+
+            for (String name : resultMP.getNames()) {
+
+                switch (resultMP.get(name)) {
+
+                    case -1:
+                        builder.append(ANSI_YELLOW);
+                        builder.append(StringUtil.lpad("-1", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+
+                    case 0:
+                        builder.append(ANSI_RED);
+                        builder.append(StringUtil.lpad("0", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+
+                    case 1:
+                        builder.append(ANSI_GREEN);
+                        builder.append(StringUtil.lpad("1", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+                }
+            }
+
+            builder.append("\n");
+        }
+
+        // write MT
+
+        if (resultMT != null) {
+
+            builder.append(ANSI_CYAN);
+            builder.append("MT: ");
+            builder.append(ANSI_RESET);
+
+            for (String name : resultMT.getNames()) {
+
+                switch (resultMT.get(name)) {
+
+                    case -1:
+                        builder.append(ANSI_YELLOW);
+                        builder.append(StringUtil.lpad("-1", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+
+                    case 0:
+                        builder.append(ANSI_RED);
+                        builder.append(StringUtil.lpad("0", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+
+                    case 1:
+                        builder.append(ANSI_GREEN);
+                        builder.append(StringUtil.lpad("1", 3, ' '));
+                        builder.append(ANSI_RESET);
+                        break;
+                }
+            }
+
+            builder.append("\n");
+        }
+
+        System.out.println(builder.toString());
+    }
+
+    public static void infer(String formula, String values) {
+        infer(Formula.parse(formula), values);
+    }
+
+    public static Map<String, Integer> decode(String values) {
+
+        Map<String, Integer> result = new HashMap<String, Integer>();
+
+        if (StringUtil.isEmpty(values)) {
+            return result;
+        }
+
+        for (String item : values.split(",")) {
+
+            String key = item.split("=")[0].trim();
+            String val = item.split("=")[1].trim();
+
+            result.put(key, Integer.valueOf(val));
+        }
+
+        return result;
     }
 
     public static void plot(Formula formula) {
