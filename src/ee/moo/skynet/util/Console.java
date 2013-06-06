@@ -1,6 +1,7 @@
 package ee.moo.skynet.util;
 
 import ee.moo.skynet.formula.Formula;
+import ee.moo.skynet.formula.FormulaCollection;
 import ee.moo.skynet.formula.FormulaException;
 import ee.moo.skynet.generator.GeneratorFormula;
 import ee.moo.skynet.generator.GeneratorSequent;
@@ -282,6 +283,28 @@ public class Console {
         }
 
         return result;
+    }
+
+    public static boolean isContradictory(Formula... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (Formula formula : formulas) {
+            collection.add(formula);
+        }
+
+        return collection.isContradictory();
+    }
+
+    public static boolean isContradictory(String... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (String formula : formulas) {
+            collection.add(Formula.parse(formula));
+        }
+
+        return collection.isContradictory();
     }
 
     public static void plot(Formula formula) {
