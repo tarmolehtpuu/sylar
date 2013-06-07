@@ -307,6 +307,23 @@ public class Console {
         return collection.isContradictory();
     }
 
+    public static boolean isContradictory(Formula formula) {
+        return formula.isFalseAlways();
+    }
+
+    public static boolean isContradictory(String formula) {
+        return isContradictory(Formula.parse(formula));
+    }
+
+
+    public static boolean isTautology(Formula formula) {
+        return formula.isTrueAlways();
+    }
+
+    public static boolean isTautology(String formula) {
+        return isTautology(Formula.parse(formula));
+    }
+
     public static void plot(Formula formula) {
 
         String dot = String.format("%d%s.dot", System.currentTimeMillis(), StringUtil.random(10));
