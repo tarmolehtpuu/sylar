@@ -4,3 +4,26 @@ predikaat- ja funktsionaalsümbolite interpretatsioonidest.
 -> A           A -> B
 ---------------------
          -B
+
+
+* http://en.wikipedia.org/wiki/Boolean_satisfiability_problem
+  - NP Complete, find one where formula evaluates to true (CNF/DNF)
+
+* http://en.wikipedia.org/wiki/Cook%E2%80%93Levin_theorem
+  - Cook's theorem states that boolean satisfiability is NP complete
+
+* http://en.wikipedia.org/wiki/Non-deterministic_algorithm
+  - Non deterministic algorithm
+
+* http://en.wikipedia.org/wiki/Brute-force_search
+  - Brute force search
+
+* http://en.wikipedia.org/wiki/Constraint_Satisfaction_Problem
+
+* http://en.wikipedia.org/wiki/DisCSP
+  - distributed constraint satisfaction problem
+
+* http://frodo2.sourceforge.net/?
+  - a framework for distributed constraint optimization
+
+* http://en.wikipedia.org/wiki/Constraint_propagation
