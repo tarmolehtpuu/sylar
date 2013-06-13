@@ -42,3 +42,5 @@ predikaat- ja funktsionaalsümbolite interpretatsioonidest.
 
 * AION BRE: http://www.ca.com/us/~/media/Files/ProductBriefs/2914-aion-bre-11-0-ps-092410-final.pdf
 
+* http://en.wikipedia.org/wiki/Automated_reasoning
+
