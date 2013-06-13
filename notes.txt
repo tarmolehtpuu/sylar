@@ -27,3 +27,18 @@ predikaat- ja funktsionaalsümbolite interpretatsioonidest.
   - a framework for distributed constraint optimization
 
 * http://en.wikipedia.org/wiki/Constraint_propagation
+
+* co-NP-complete: http://en.wikipedia.org/wiki/Co-NP-complete
+  - For the frequent case of propositional logic, the problem is decidable but Co-NP-complete, 
+  - and hence only exponential-time algorithms are believed to exist for general proof tasks
+
+* http://en.wikipedia.org/wiki/Automated_theorem_proving
+
+* http://en.wikipedia.org/wiki/Conjunctive_normal_form
+
+* http://en.wikipedia.org/wiki/Skolem_normal_form
+
+* http://en.wikipedia.org/wiki/Logic_Theory_Machine
+
+* AION BRE: http://www.ca.com/us/~/media/Files/ProductBriefs/2914-aion-bre-11-0-ps-092410-final.pdf
+
