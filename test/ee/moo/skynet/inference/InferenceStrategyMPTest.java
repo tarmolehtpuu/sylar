@@ -17,6 +17,16 @@ public class InferenceStrategyMPTest extends TestCase {
 
     private InferenceStrategy strategy = new InferenceStrategyMP();
 
+    public void testTautology() {
+        known.clear();
+
+        InferenceResult result = strategy.apply(Formula.parse("Av!A⊃B"), known);
+
+        assertEquals(2, result.size());
+        assertEquals(-1, result.get("A"));
+        assertEquals(1, result.get("B"));
+    }
+
     public void test1() {
 
         known.clear();
@@ -67,5 +77,19 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("A"));
         assertEquals(1, result.get("B"));
         assertEquals(1, result.get("C"));
+    }
+
+    public void test5() {
+        known.clear();
+        known.put("B", 0);
+
+        InferenceResult result = strategy.apply(Formula.parse("Av!BvC⊃E&D"), known);
+
+        assertEquals(5, result.size());
+        assertEquals(0, result.get("B"));
+        assertEquals(-1, result.get("A"));
+        assertEquals(-1, result.get("C"));
+        assertEquals(1, result.get("E"));
+        assertEquals(1, result.get("D"));
     }
 }
