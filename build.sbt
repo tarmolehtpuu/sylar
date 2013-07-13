@@ -6,6 +6,8 @@ unmanagedSourceDirectories in Compile <+= baseDirectory(_ / "src")
 
 unmanagedSourceDirectories in Test <+= baseDirectory(_ / "test")
 
+javacOptions ++= Seq("-encoding", "UTF-8")
+
 initialCommands in console := """import ee.moo.skynet.util.Console._"""
 
 libraryDependencies ++= Seq(
