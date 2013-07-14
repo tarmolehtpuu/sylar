@@ -1,7 +1,7 @@
 package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
-import ee.moo.skynet.util.BinaryUtil;
+import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.List;
 import java.util.Map;
@@ -61,7 +61,11 @@ public class InferenceStrategyMP extends InferenceStrategy {
         // we keep an history of unknown variable values for the rhs
         Map<String, List<Integer>> history = getHistoryContainer(unknown);
 
-        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
+        PermutationIterator iterator = new PermutationIterator(unknown.size());
+
+        while (iterator.hasNext()) {
+
+            int[] permutation = iterator.next();
 
             // set known values for RHS
             for (String key : request.getValues().keySet()) {

@@ -1,7 +1,7 @@
 package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
-import ee.moo.skynet.util.BinaryUtil;
+import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,11 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             history = getHistoryContainer(unknownRhs);
 
-            for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
+            PermutationIterator iterator = new PermutationIterator(unknownRhs.size());
+
+            while (iterator.hasNext()) {
+
+                int[] permutation = iterator.next();
 
                 // set known values for RHS
                 for (String key : request.getValues().keySet()) {
@@ -63,7 +67,11 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             history = getHistoryContainer(unknownRhs);
 
-            for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
+            PermutationIterator iterator = new PermutationIterator(unknownRhs.size());
+
+            while (iterator.hasNext()) {
+
+                int[] permutation = iterator.next();
 
                 // set known values for RHS
                 for (String key : request.getValues().keySet()) {
@@ -92,7 +100,11 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             history = getHistoryContainer(unknownLhs);
 
-            for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
+            PermutationIterator iterator = new PermutationIterator(unknownLhs.size());
+
+            while (iterator.hasNext()) {
+
+                int[] permutation = iterator.next();
 
                 // set known values for LHS
                 for (String key : request.getValues().keySet()) {
@@ -122,7 +134,11 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
             history = getHistoryContainer(unknownLhs);
 
-            for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
+            PermutationIterator iterator = new PermutationIterator(unknownLhs.size());
+
+            while (iterator.hasNext()) {
+
+                int[] permutation = iterator.next();
 
                 // set known values for LHS
                 for (String key : request.getValues().keySet()) {

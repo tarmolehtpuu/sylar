@@ -5,7 +5,7 @@ import ee.moo.skynet.alphabet.AlphabetFormula;
 import ee.moo.skynet.alphabet.AlphabetSequent;
 import ee.moo.skynet.input.ParserFormula;
 import ee.moo.skynet.input.ParserSequent;
-import ee.moo.skynet.util.BinaryUtil;
+import ee.moo.skynet.util.PermutationIterator;
 import ee.moo.skynet.util.StringUtil;
 
 import java.util.ArrayList;
@@ -213,7 +213,11 @@ public class Formula {
 
         String[] statements = getStatements();
 
-        for (int[] permutation : BinaryUtil.permutations(statements.length)) {
+        PermutationIterator iterator = new PermutationIterator(statements.length);
+
+        while (iterator.hasNext()) {
+
+            int[] permutation = iterator.next();
 
             for (int i = 0; i < statements.length; i++) {
                 setValue(statements[i], permutation[i]);
@@ -232,7 +236,11 @@ public class Formula {
 
         String[] statements = getStatements();
 
-        for (int[] permutation : BinaryUtil.permutations(statements.length)) {
+        PermutationIterator iterator = new PermutationIterator(statements.length);
+
+        while (iterator.hasNext()) {
+
+            int[] permutation = iterator.next();
 
             for (int i = 0; i < statements.length; i++) {
                 setValue(statements[i], permutation[i]);

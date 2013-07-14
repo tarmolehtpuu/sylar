@@ -1,6 +1,6 @@
 package ee.moo.skynet.formula;
 
-import ee.moo.skynet.util.BinaryUtil;
+import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,8 +37,12 @@ public class FormulaCollection {
 
         Collections.sort(statements);
 
+        PermutationIterator iterator = new PermutationIterator(statements.size());
+
         outer:
-        for (int[] permutation : BinaryUtil.permutations(statements.size())) {
+        while (iterator.hasNext()) {
+
+            int[] permutation = iterator.next();
 
             for (int i = 0; i < statements.size(); i++) {
                 for (Formula formula : formulas) {

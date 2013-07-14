@@ -1,7 +1,7 @@
 package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
-import ee.moo.skynet.util.BinaryUtil;
+import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +41,11 @@ public abstract class InferenceStrategy {
             }
         }
 
-        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
+        PermutationIterator iterator = new PermutationIterator(unknown.size());
+
+        while (iterator.hasNext()) {
+
+            int[] permutation = iterator.next();
 
             // set known values
             for (String key : values.keySet()) {
@@ -72,7 +76,11 @@ public abstract class InferenceStrategy {
             }
         }
 
-        for (int[] permutation : BinaryUtil.permutations(unknown.size())) {
+        PermutationIterator iterator = new PermutationIterator(unknown.size());
+
+        while (iterator.hasNext()) {
+
+            int[] permutation = iterator.next();
 
             // set known values
             for (String key : values.keySet()) {
