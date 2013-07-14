@@ -20,7 +20,7 @@ public class InferenceStrategyMPTest extends TestCase {
     public void testTautology() {
         known.clear();
 
-        InferenceResult result = strategy.apply(Formula.parse("Av!A⊃B"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("Av!A⊃B"), known));
 
         assertEquals(2, result.size());
         assertEquals(-1, result.get("A"));
@@ -32,7 +32,7 @@ public class InferenceStrategyMPTest extends TestCase {
         known.clear();
         known.put("A", 1);
 
-        InferenceResult result = strategy.apply(Formula.parse("A⊃B"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("A⊃B"), known));
 
         assertEquals(2, result.size());
         assertEquals(1, result.get("A"));
@@ -44,7 +44,7 @@ public class InferenceStrategyMPTest extends TestCase {
         known.clear();
         known.put("A", 1);
 
-        InferenceResult result = strategy.apply(Formula.parse("AvB⊃C"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("AvB⊃C"), known));
 
         assertEquals(3, result.size());
         assertEquals(1, result.get("A"));
@@ -57,7 +57,7 @@ public class InferenceStrategyMPTest extends TestCase {
         known.clear();
         known.put("A", 1);
 
-        InferenceResult result = strategy.apply(Formula.parse("AvB⊃!C"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("AvB⊃!C"), known));
 
         assertEquals(3, result.size());
         assertEquals(1, result.get("A"));
@@ -71,7 +71,7 @@ public class InferenceStrategyMPTest extends TestCase {
         known.put("A", 1);
         known.put("B", 1);
 
-        InferenceResult result = strategy.apply(Formula.parse("A⊃B&C"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("A⊃B&C"), known));
 
         assertEquals(3, result.size());
         assertEquals(1, result.get("A"));
@@ -83,7 +83,7 @@ public class InferenceStrategyMPTest extends TestCase {
         known.clear();
         known.put("B", 0);
 
-        InferenceResult result = strategy.apply(Formula.parse("Av!BvC⊃E&D"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("Av!BvC⊃E&D"), known));
 
         assertEquals(5, result.size());
         assertEquals(0, result.get("B"));

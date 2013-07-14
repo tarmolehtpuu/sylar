@@ -2,9 +2,7 @@ package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.BinaryUtil;
-import ee.moo.skynet.util.StringUtil;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,20 +14,20 @@ import java.util.Map;
 public class InferenceStrategyEQ extends InferenceStrategy {
 
     @Override
-    public InferenceResult apply(Formula formula, Map<String, Integer> values) {
+    public InferenceResult apply(InferenceRequest request) {
 
-        InferenceResult result = new InferenceResult(values);
+        InferenceResult result = new InferenceResult(request.getValues());
 
-        Formula lhs = formula.getLeft();
-        Formula rhs = formula.getRight();
+        Formula lhs = request.getFormula().getLeft();
+        Formula rhs = request.getFormula().getRight();
 
-        List<String> unknownLhs = getUnknown(formula.getLeft(), values);
-        List<String> unknownRhs = getUnknown(formula.getRight(), values);
+        List<String> unknownLhs = getUnknown(lhs, request.getValues());
+        List<String> unknownRhs = getUnknown(rhs, request.getValues());
 
         // we keep an history of unknown variable values
         Map<String, List<Integer>> history = null;
 
-        if (isAlwaysTrue(formula.getLeft(), values)) {
+        if (isAlwaysTrue(lhs, request.getValues())) {
 
             // LHS is always true, RHS should always be true
 
@@ -38,8 +36,8 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
 
                 // set known values for RHS
-                for (String key : values.keySet()) {
-                    rhs.setValue(key, values.get(key));
+                for (String key : request.getValues().keySet()) {
+                    rhs.setValue(key, request.getValues().get(key));
                 }
 
                 // set unknown values for RHS based on permutations
@@ -59,7 +57,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             }
 
 
-        } else if (isAlwaysFalse(formula.getLeft(), values)) {
+        } else if (isAlwaysFalse(lhs, request.getValues())) {
 
             // LHS is always false, RHS should always be false
 
@@ -68,8 +66,8 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             for (int[] permutation : BinaryUtil.permutations(unknownRhs.size())) {
 
                 // set known values for RHS
-                for (String key : values.keySet()) {
-                    rhs.setValue(key, values.get(key));
+                for (String key : request.getValues().keySet()) {
+                    rhs.setValue(key, request.getValues().get(key));
                 }
 
                 // set unknown values for RHS based on permutations
@@ -88,7 +86,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
                 }
             }
 
-        } else if (isAlwaysTrue(formula.getRight(), values)) {
+        } else if (isAlwaysTrue(rhs, request.getValues())) {
 
             // RHS is always true, LHS should always be true
 
@@ -97,8 +95,8 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
 
                 // set known values for LHS
-                for (String key : values.keySet()) {
-                    lhs.setValue(key, values.get(key));
+                for (String key : request.getValues().keySet()) {
+                    lhs.setValue(key, request.getValues().get(key));
                 }
 
                 // set unknown values for LHS based on permutations
@@ -118,7 +116,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             }
 
 
-        } else if (isAlwaysFalse(formula.getRight(), values)) {
+        } else if (isAlwaysFalse(rhs, request.getValues())) {
 
             // RHS is always false, LHS should always be false
 
@@ -127,8 +125,8 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             for (int[] permutation : BinaryUtil.permutations(unknownLhs.size())) {
 
                 // set known values for LHS
-                for (String key : values.keySet()) {
-                    lhs.setValue(key, values.get(key));
+                for (String key : request.getValues().keySet()) {
+                    lhs.setValue(key, request.getValues().get(key));
                 }
 
                 // set unknown values for LHS based on permutations
@@ -188,7 +186,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
         // fill in values that we are still unsure about
 
-        for (String statement : formula.getStatements()) {
+        for (String statement : request.getFormula().getStatements()) {
             if (!result.contains(statement)) {
                 result.set(statement, -1);
             }
@@ -196,23 +194,5 @@ public class InferenceStrategyEQ extends InferenceStrategy {
 
 
         return result;
-    }
-
-
-    public static void main(String[] args) {
-
-        Formula f = Formula.parse("P⇔!Q");
-
-        Map<String, Integer> values = new HashMap<String, Integer>();
-
-        values.put("P", 1);
-
-        InferenceResult result = new InferenceStrategyEQ().apply(f, values);
-
-        for (String name : result.getNames()) {
-            System.out.print(String.format("%s: ", name));
-            System.out.print(StringUtil.lpad(String.valueOf(result.get(name)), 2, ' '));
-            System.out.println();
-        }
     }
 }

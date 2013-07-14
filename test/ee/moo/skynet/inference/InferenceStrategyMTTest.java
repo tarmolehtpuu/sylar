@@ -21,7 +21,7 @@ public class InferenceStrategyMTTest extends TestCase {
 
         known.clear();
 
-        InferenceResult result = strategy.apply(Formula.parse("B⊃A&!A"), known);
+        InferenceResult result = strategy.apply(new InferenceRequest(Formula.parse("B⊃A&!A"), known));
 
         assertEquals(2, result.size());
         assertEquals(0, result.get("B"));

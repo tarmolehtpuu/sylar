@@ -5,10 +5,7 @@ import ee.moo.skynet.formula.FormulaCollection;
 import ee.moo.skynet.formula.FormulaException;
 import ee.moo.skynet.generator.GeneratorFormula;
 import ee.moo.skynet.generator.GeneratorSequent;
-import ee.moo.skynet.inference.InferenceResult;
-import ee.moo.skynet.inference.InferenceStrategyEQ;
-import ee.moo.skynet.inference.InferenceStrategyMP;
-import ee.moo.skynet.inference.InferenceStrategyMT;
+import ee.moo.skynet.inference.*;
 import ee.moo.skynet.output.SerializerDot;
 
 import java.io.FileNotFoundException;
@@ -119,12 +116,12 @@ public class Console {
         InferenceResult resultMT = null;
 
         if (formula.isEquivalence()) {
-            resultEQ = new InferenceStrategyEQ().apply(formula, decode(values));
+            resultEQ = new InferenceStrategyEQ().apply(new InferenceRequest(formula, decode(values)));
         }
 
         if (formula.isImplication()) {
-            resultMP = new InferenceStrategyMP().apply(formula, decode(values));
-            resultMT = new InferenceStrategyMT().apply(formula, decode(values));
+            resultMP = new InferenceStrategyMP().apply(new InferenceRequest(formula, decode(values)));
+            resultMT = new InferenceStrategyMT().apply(new InferenceRequest(formula, decode(values)));
         }
 
         InferenceResult header = null;

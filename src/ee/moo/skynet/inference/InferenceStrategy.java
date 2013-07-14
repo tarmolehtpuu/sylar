@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public abstract class InferenceStrategy {
 
-    public abstract InferenceResult apply(Formula formula, Map<String, Integer> values);
+    public abstract InferenceResult apply(InferenceRequest request);
 
     protected List<String> getUnknown(Formula formula, Map<String, Integer> values) {
 
