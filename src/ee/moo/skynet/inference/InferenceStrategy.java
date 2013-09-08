@@ -100,15 +100,4 @@ public abstract class InferenceStrategy {
         return true;
     }
 
-    protected Map<String, List<Integer>> getHistoryContainer(List<String> values) {
-
-        Map<String, List<Integer>> history = new HashMap<String, List<Integer>>(values.size());
-
-        for (String value : values) {
-            history.put(value, new ArrayList<Integer>());
-        }
-
-        return history;
-    }
-
 }

@@ -4,7 +4,6 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: tarmo
@@ -26,7 +25,7 @@ public class InferenceStrategyMT extends InferenceStrategy {
         // no unknowns in LHS, no need to try to infere anything
         if (unknown.isEmpty()) {
             for (String statement : request.getFormula().getStatements()) {
-                if (!result.contains(statement)) {
+                if (!result.containsKnown(statement)) {
                     result.set(statement, -1);
                 }
             }
@@ -40,24 +39,13 @@ public class InferenceStrategyMT extends InferenceStrategy {
             // the inference as a failure and we can stop here
 
             for (String statement : request.getFormula().getStatements()) {
-                if (!result.contains(statement)) {
+                if (!result.containsKnown(statement)) {
                     result.set(statement, -1);
                 }
             }
 
             return result;
         }
-
-        // inference is most likely successful, fill in the missing unknowns for RHS
-
-        for (String statement : rhs.getStatements()) {
-            if (!result.contains(statement)) {
-                result.set(statement, -1);
-            }
-        }
-
-        // we keep an history of unknown variable values for the LHS
-        Map<String, List<Integer>> history = getHistoryContainer(unknown);
 
         PermutationIterator iterator = new PermutationIterator(unknown.size());
 
@@ -80,42 +68,15 @@ public class InferenceStrategyMT extends InferenceStrategy {
                 // if lhs evaluates to false track history for each unknown variable
 
                 for (int i = 0; i < permutation.length; i++) {
-                    history.get(unknown.get(i)).add(permutation[i]);
+                    result.record(unknown.get(i), permutation[i]);
                 }
 
             }
         }
 
-        // unknowns that have a fixed value for LHS to evaluate to false will be considered found
-
-        for (String key : history.keySet()) {
-
-            if (history.get(key).size() > 0) {
-
-                boolean onlyT = true;
-                boolean onlyF = true;
-
-                for (Integer i : history.get(key)) {
-
-                    if (i == 1) {
-                        onlyF = false;
-                    }
-
-                    if (i == 0) {
-                        onlyT = false;
-                    }
-                }
-
-                if (onlyF) {
-                    result.set(key, 0);
-
-                } else if (onlyT) {
-                    result.set(key, 1);
-
-                } else {
-                    result.set(key, -1);
-
-                }
+        for (String statement : request.getFormula().getStatements()) {
+            if (!result.containsKnown(statement) && !result.containsUnknown(statement)) {
+                result.set(statement, -1);
             }
         }
 

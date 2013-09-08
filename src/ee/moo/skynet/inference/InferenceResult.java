@@ -9,26 +9,77 @@ import java.util.*;
  */
 public class InferenceResult {
 
-    private Map<String, Integer> data = new HashMap<String, Integer>();
+    private Map<String, Integer> known = new HashMap<String, Integer>();
 
-    public InferenceResult() {
+    private Map<String, Boolean> unknownT = new HashMap<String, Boolean>();
+    private Map<String, Boolean> unknownF = new HashMap<String, Boolean>();
+
+    public InferenceResult(Map<String, Integer> known) {
+        for (String key : known.keySet()) {
+            set(key, known.get(key));
+        }
     }
 
-    public InferenceResult(Map<String, Integer> values) {
-        for (String key : values.keySet()) {
-            data.put(key, values.get(key));
+    public void set(String name, Integer value) {
+        known.put(name, value);
+    }
+
+    public void record(String name, Integer value) {
+
+        if (known.containsKey(name)) {
+            throw new InferenceException(String.format("Unable to record() value for known variable: %s", name));
+        }
+
+        if (!unknownT.containsKey(name)) {
+            unknownT.put(name, false);
+        }
+
+        if (!unknownF.containsKey(name)) {
+            unknownF.put(name, false);
+        }
+
+        if (value == 1) {
+            unknownT.put(name, true);
+        }
+
+        if (value == 0) {
+            unknownF.put(name, true);
         }
     }
 
     public int get(String name) {
-        return data.get(name);
+
+        if (known.containsKey(name)) {
+            return known.get(name);
+        }
+
+        if (unknownT.get(name) && !unknownF.get(name)) {
+            return 1;
+        }
+
+        if (unknownF.get(name) && !unknownT.get(name)) {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    public boolean containsKnown(String name) {
+        return known.containsKey(name);
+    }
+
+    public boolean containsUnknown(String name) {
+        return unknownT.containsKey(name) || unknownF.containsKey(name);
     }
 
     public List<String> getNames() {
+        List<String> names = new ArrayList<String>();
 
-        List<String> names = new ArrayList<String>(data.size());
+        for (String name : known.keySet()) {
+            names.add(name);
+        }
 
-        for (String name : data.keySet()) {
+        for (String name : unknownT.keySet()) {
             names.add(name);
         }
 
@@ -37,15 +88,7 @@ public class InferenceResult {
         return names;
     }
 
-    public void set(String name, Integer value) {
-        data.put(name, value);
-    }
-
     public int size() {
-        return data.size();
-    }
-
-    public boolean contains(String name) {
-        return data.containsKey(name);
+        return known.size() + unknownT.size();
     }
 }

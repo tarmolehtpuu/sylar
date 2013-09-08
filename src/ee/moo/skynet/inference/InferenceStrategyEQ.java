@@ -4,7 +4,6 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: tarmo
@@ -24,14 +23,9 @@ public class InferenceStrategyEQ extends InferenceStrategy {
         List<String> unknownLhs = getUnknown(lhs, request.getValues());
         List<String> unknownRhs = getUnknown(rhs, request.getValues());
 
-        // we keep an history of unknown variable values
-        Map<String, List<Integer>> history = null;
-
         if (isAlwaysTrue(lhs, request.getValues())) {
 
             // LHS is always true, RHS should always be true
-
-            history = getHistoryContainer(unknownRhs);
 
             PermutationIterator iterator = new PermutationIterator(unknownRhs.size());
 
@@ -54,7 +48,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
                     // if RHS evaluates to true track history for each unknown variable
 
                     for (int i = 0; i < permutation.length; i++) {
-                        history.get(unknownRhs.get(i)).add(permutation[i]);
+                        result.record(unknownRhs.get(i), permutation[i]);
                     }
 
                 }
@@ -64,8 +58,6 @@ public class InferenceStrategyEQ extends InferenceStrategy {
         } else if (isAlwaysFalse(lhs, request.getValues())) {
 
             // LHS is always false, RHS should always be false
-
-            history = getHistoryContainer(unknownRhs);
 
             PermutationIterator iterator = new PermutationIterator(unknownRhs.size());
 
@@ -88,7 +80,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
                     // if RHS evaluates to false track history for each unknown variable
 
                     for (int i = 0; i < permutation.length; i++) {
-                        history.get(unknownRhs.get(i)).add(permutation[i]);
+                        result.record(unknownRhs.get(i), permutation[i]);
                     }
 
                 }
@@ -97,9 +89,6 @@ public class InferenceStrategyEQ extends InferenceStrategy {
         } else if (isAlwaysTrue(rhs, request.getValues())) {
 
             // RHS is always true, LHS should always be true
-
-            history = getHistoryContainer(unknownLhs);
-
             PermutationIterator iterator = new PermutationIterator(unknownLhs.size());
 
             while (iterator.hasNext()) {
@@ -121,7 +110,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
                     // if LHS evaluates to true track history for each unknown variable
 
                     for (int i = 0; i < permutation.length; i++) {
-                        history.get(unknownLhs.get(i)).add(permutation[i]);
+                        result.record(unknownLhs.get(i), permutation[i]);
                     }
 
                 }
@@ -131,8 +120,6 @@ public class InferenceStrategyEQ extends InferenceStrategy {
         } else if (isAlwaysFalse(rhs, request.getValues())) {
 
             // RHS is always false, LHS should always be false
-
-            history = getHistoryContainer(unknownLhs);
 
             PermutationIterator iterator = new PermutationIterator(unknownLhs.size());
 
@@ -155,59 +142,18 @@ public class InferenceStrategyEQ extends InferenceStrategy {
                     // if LHS evaluates to false track history for each unknown variable
 
                     for (int i = 0; i < permutation.length; i++) {
-                        history.get(unknownLhs.get(i)).add(permutation[i]);
+                        result.record(unknownLhs.get(i), permutation[i]);
                     }
 
                 }
             }
-
-
         }
-
-        // unknowns that have a fixed value will be considered found
-
-        if (history != null) {
-
-            for (String key : history.keySet()) {
-
-                if (history.get(key).size() > 0) {
-
-                    boolean onlyT = true;
-                    boolean onlyF = true;
-
-                    for (Integer i : history.get(key)) {
-
-                        if (i == 1) {
-                            onlyF = false;
-                        }
-
-                        if (i == 0) {
-                            onlyT = false;
-                        }
-                    }
-
-                    if (onlyF) {
-                        result.set(key, 0);
-
-                    } else if (onlyT) {
-                        result.set(key, 1);
-
-                    } else {
-                        result.set(key, -1);
-
-                    }
-                }
-            }
-        }
-
-        // fill in values that we are still unsure about
 
         for (String statement : request.getFormula().getStatements()) {
-            if (!result.contains(statement)) {
+            if (!result.containsKnown(statement) && !result.containsUnknown(statement)) {
                 result.set(statement, -1);
             }
         }
-
 
         return result;
     }
