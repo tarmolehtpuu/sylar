@@ -1,10 +1,38 @@
 Meil on fikseeritud tõeväärtusega valemid, ehk valemid mille tõeväärtus ei olene sinna kuuluvate indiviidsümbolite,
 predikaat- ja funktsionaalsümbolite interpretatsioonidest.
 
--> A           A -> B
----------------------
-         -B
 
+Tuletusreeglid:
+
+MP:
+A       A -> B
+--------------
+     B
+
+MT:
+!B      A -> B
+--------------
+     !A
+
+EQ1:
+A        A = B
+--------------
+      B
+
+EQ2:
+!A       A = B
+--------------
+     !B
+
+EQ3:
+B        A = B
+--------------
+      A
+
+EQ4:
+!B       A = B
+--------------
+     !A
 
 * http://en.wikipedia.org/wiki/Boolean_satisfiability_problem
   - NP Complete, find one where formula evaluates to true (CNF/DNF)
