@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 5/31/13
  * Time: 1:58 PM
  */
-public class InferenceStrategyEQ extends InferenceStrategy {
+public class InferenceStrategyEQ implements InferenceStrategy {
 
     @Override
     public InferenceResult apply(InferenceRequest request) {
@@ -20,10 +20,10 @@ public class InferenceStrategyEQ extends InferenceStrategy {
         Formula lhs = request.getFormula().getLeft();
         Formula rhs = request.getFormula().getRight();
 
-        List<String> unknownLhs = getUnknown(lhs, request.getValues());
-        List<String> unknownRhs = getUnknown(rhs, request.getValues());
+        List<String> unknownLhs = InferenceHelper.getUnknown(lhs, request.getValues());
+        List<String> unknownRhs = InferenceHelper.getUnknown(rhs, request.getValues());
 
-        if (isAlwaysTrue(lhs, request.getValues())) {
+        if (InferenceHelper.isAlwaysTrue(lhs, request.getValues())) {
 
             // LHS is always true, RHS should always be true
 
@@ -55,7 +55,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             }
 
 
-        } else if (isAlwaysFalse(lhs, request.getValues())) {
+        } else if (InferenceHelper.isAlwaysFalse(lhs, request.getValues())) {
 
             // LHS is always false, RHS should always be false
 
@@ -86,7 +86,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
                 }
             }
 
-        } else if (isAlwaysTrue(rhs, request.getValues())) {
+        } else if (InferenceHelper.isAlwaysTrue(rhs, request.getValues())) {
 
             // RHS is always true, LHS should always be true
             PermutationIterator iterator = new PermutationIterator(unknownLhs.size());
@@ -117,7 +117,7 @@ public class InferenceStrategyEQ extends InferenceStrategy {
             }
 
 
-        } else if (isAlwaysFalse(rhs, request.getValues())) {
+        } else if (InferenceHelper.isAlwaysFalse(rhs, request.getValues())) {
 
             // RHS is always false, LHS should always be false
 

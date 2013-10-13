@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 5/31/13
  * Time: 1:57 PM
  */
-public class InferenceStrategyMP extends InferenceStrategy {
+public class InferenceStrategyMP implements InferenceStrategy {
 
     @Override
     public InferenceResult apply(InferenceRequest request) {
@@ -20,7 +20,7 @@ public class InferenceStrategyMP extends InferenceStrategy {
         Formula lhs = request.getFormula().getLeft();
         Formula rhs = request.getFormula().getRight();
 
-        List<String> unknown = getUnknown(request.getFormula().getRight(), request.getValues());
+        List<String> unknown = InferenceHelper.getUnknown(request.getFormula().getRight(), request.getValues());
 
         // no unknowns in RHS, no need to try to infere anything
         if (unknown.isEmpty()) {
@@ -35,7 +35,7 @@ public class InferenceStrategyMP extends InferenceStrategy {
 
         // detect if LHS is always true, based on already known values
 
-        if (!isAlwaysTrue(lhs, request.getValues())) {
+        if (!InferenceHelper.isAlwaysTrue(lhs, request.getValues())) {
 
             // found an interpretation that isn't true, therefore we consider
             // the inference as a failure and we can stop here

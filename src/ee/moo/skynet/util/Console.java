@@ -113,19 +113,46 @@ public class Console {
         System.out.println(builder.toString());
     }
 
-    public static void infer(Formula formula, String values) {
+    public static void infer(String values, Formula formula) {
+        infer(new InferenceRequest(formula, decode(values)));
+    }
+
+    public static void infer(String values, String formula) {
+        infer(new InferenceRequest(Formula.parse(formula), decode(values)));
+    }
+
+    public static void infer(String values, String... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (String input : formulas) {
+            collection.add(Formula.parse(input));
+        }
+
+        InferenceRequest request = new InferenceRequest(decode(values));
+
+        if (collection.size() == 1) {
+            request.setFormula(collection.get(0));
+        } else {
+            request.setFormulaCollection(collection);
+        }
+
+        infer(request);
+    }
+
+    public static void infer(InferenceRequest request) {
 
         InferenceResult resultEQ = null;
         InferenceResult resultMP = null;
         InferenceResult resultMT = null;
 
-        if (formula.isEquivalence()) {
-            resultEQ = new InferenceStrategyEQ().apply(new InferenceRequest(formula, decode(values)));
+        if (request.getFormula().isEquivalence()) {
+            resultEQ = new InferenceStrategyEQ().apply(request);
         }
 
-        if (formula.isImplication()) {
-            resultMP = new InferenceStrategyMP().apply(new InferenceRequest(formula, decode(values)));
-            resultMT = new InferenceStrategyMT().apply(new InferenceRequest(formula, decode(values)));
+        if (request.getFormula().isImplication()) {
+            resultMP = new InferenceStrategyMP().apply(request);
+            resultMT = new InferenceStrategyMT().apply(request);
         }
 
         InferenceResult header = null;
@@ -261,10 +288,6 @@ public class Console {
         }
 
         System.out.println(builder.toString());
-    }
-
-    public static void infer(String formula, String values) {
-        infer(Formula.parse(formula), values);
     }
 
     public static Map<String, Integer> decode(String values) {

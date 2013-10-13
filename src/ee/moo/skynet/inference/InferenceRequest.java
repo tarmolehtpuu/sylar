@@ -1,6 +1,7 @@
 package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
+import ee.moo.skynet.formula.FormulaCollection;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -23,6 +24,9 @@ public class InferenceRequest {
     public InferenceRequest() {
     }
 
+    public InferenceRequest(FormulaCollection collection) {
+    }
+
     public InferenceRequest(Formula formula) {
         this.formula = formula;
     }
@@ -39,12 +43,19 @@ public class InferenceRequest {
         this.max = max;
     }
 
+    public InferenceRequest(Map<String, Integer> values) {
+        this.values = values;
+    }
+
     public Formula getFormula() {
         return formula;
     }
 
     public void setFormula(Formula formula) {
         this.formula = formula;
+    }
+
+    public void setFormulaCollection(FormulaCollection collection) {
     }
 
     public Map<String, Integer> getValues() {

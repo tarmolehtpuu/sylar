@@ -22,6 +22,14 @@ public class FormulaCollection {
         formulas.add(formula);
     }
 
+    public Formula get(int index) {
+        return formulas.get(index);
+    }
+
+    public int size() {
+        return formulas.size();
+    }
+
     public boolean isContradictory() {
 
         List<String> statements = new ArrayList<String>();
