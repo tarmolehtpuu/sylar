@@ -71,6 +71,30 @@ public class FormulaCollection {
         return true;
     }
 
+    public FormulaCollection select(FormulaFilter filter) {
+
+        FormulaCollection result = new FormulaCollection();
+
+        for (Formula formula : formulas) {
+            if (filter.accepts(formula)) {
+                result.add(formula);
+            }
+        }
+
+        return result;
+    }
+
+    public Formula detect(FormulaFilter filter) {
+
+        for (Formula formula : formulas) {
+            if (filter.accepts(formula)) {
+                return formula;
+            }
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
 
         FormulaCollection collection = new FormulaCollection();
