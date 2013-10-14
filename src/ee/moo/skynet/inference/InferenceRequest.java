@@ -13,6 +13,9 @@ import java.util.Map;
  */
 public class InferenceRequest {
 
+    private static final String NAME_TRUE = "TRUE";
+    private static final String NAME_FALSE = "FALSE";
+
     private Formula formula;
 
     private Map<String, Integer> values;
@@ -22,9 +25,6 @@ public class InferenceRequest {
     private BigInteger max;
 
     public InferenceRequest() {
-    }
-
-    public InferenceRequest(FormulaCollection collection) {
     }
 
     public InferenceRequest(Formula formula) {
@@ -55,7 +55,102 @@ public class InferenceRequest {
         this.formula = formula;
     }
 
-    public void setFormulaCollection(FormulaCollection collection) {
+    public void setFormulaCollectionEQ(FormulaCollection collection) {
+
+        if (values == null) {
+            throw new InferenceException("InferenceRequest.values must be set before calling setFormulaCollectionEQ()");
+        }
+
+        // TODO: implement setFormulaCollectionEQ
+    }
+
+    public void setFormulaCollectionMP(FormulaCollection collection) {
+
+        if (values == null) {
+            throw new InferenceException("InferenceRequest.values must be set before calling setFormulaCollectionMP()");
+        }
+
+        FormulaCollection result = new FormulaCollection();
+
+        for (int i = 0; i < collection.size(); i++) {
+
+            Formula formula = collection.get(i);
+
+            if (formula.isEquivalence()) {
+
+                if (InferenceHelper.isAlwaysTrue(formula.getLeft(), values)) {
+                    result.add(formula.getRight());
+
+                } else if (InferenceHelper.isAlwaysTrue(formula.getRight(), values)) {
+                    result.add(formula.getLeft());
+                }
+
+            } else if (formula.isImplication()) {
+
+                if (InferenceHelper.isAlwaysTrue(formula.getLeft(), values)) {
+                    result.add(formula.getRight());
+                }
+
+            } else {
+                throw new InferenceException("Invalid formula encountered, expecting either implication or equivalence");
+            }
+        }
+
+        if (result.isEmpty()) {
+            throw new InferenceException("No valid formulas found for setFormulaCollectionMP()");
+        }
+
+        values.put(NAME_TRUE, 1);
+
+        formula = new Formula(Formula.NodeType.IMPLICATION);
+        formula.setLeft(new Formula(Formula.NodeType.STATEMENT));
+        formula.getLeft().setName(NAME_TRUE);
+        formula.setRight(Formula.parse(result.joinConjunction()));
+    }
+
+    public void setFormulaCollectionMT(FormulaCollection collection) {
+
+        if (values == null) {
+            throw new InferenceException("InferenceRequest.values must be set before calling setFormulaCollectionMT()");
+        }
+
+        FormulaCollection result = new FormulaCollection();
+
+        for (int i = 0; i < collection.size(); i++) {
+
+            Formula formula = collection.get(i);
+
+            if (formula.isEquivalence()) {
+
+                if (InferenceHelper.isAlwaysFalse(formula.getLeft(), values)) {
+                    result.add(formula.getRight());
+
+                } else if (InferenceHelper.isAlwaysFalse(formula.getRight(), values)) {
+                    result.add(formula.getLeft());
+
+                }
+
+            } else if (formula.isImplication()) {
+
+                if (InferenceHelper.isAlwaysFalse(formula.getRight(), values)) {
+                    result.add(formula.getLeft());
+                }
+
+            } else {
+                throw new InferenceException("Invalid formula encountered, expecting either implication or equivalence");
+            }
+        }
+
+        if (result.isEmpty()) {
+            throw new InferenceException("No valid formulas found for setFormulaCollectionMP()");
+        }
+
+        values.put(NAME_FALSE, 0);
+
+        formula = new Formula(Formula.NodeType.IMPLICATION);
+        formula.setLeft(Formula.parse(result.joinConjunction()));
+        formula.setRight(new Formula(Formula.NodeType.STATEMENT));
+        formula.getRight().setName(NAME_FALSE);
     }
 
     public Map<String, Integer> getValues() {

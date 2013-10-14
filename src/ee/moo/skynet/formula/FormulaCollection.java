@@ -1,5 +1,6 @@
 package ee.moo.skynet.formula;
 
+import ee.moo.skynet.alphabet.AlphabetFormula;
 import ee.moo.skynet.util.PermutationIterator;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.List;
  * Time: 01:04 AM
  */
 public class FormulaCollection {
+
+    private static final AlphabetFormula ALPHABET = new AlphabetFormula();
 
     private List<Formula> formulas = new ArrayList<Formula>();
 
@@ -28,6 +31,10 @@ public class FormulaCollection {
 
     public int size() {
         return formulas.size();
+    }
+
+    public boolean isEmpty() {
+        return formulas.size() == 0;
     }
 
     public boolean isContradictory() {
@@ -95,14 +102,35 @@ public class FormulaCollection {
         return null;
     }
 
-    public static void main(String[] args) {
+    public String joinConjunction() {
 
-        FormulaCollection collection = new FormulaCollection();
+        StringBuilder builder = new StringBuilder();
 
-        collection.add(Formula.parse("!(A&B)→A"));
-        collection.add(Formula.parse("!(A&B)→!A"));
-        collection.add(Formula.parse("A,B→!A"));
+        for (Formula formula : formulas) {
+            builder.append(formula.toString());
+            builder.append(ALPHABET.getSymbolConjunction());
+        }
 
-        System.out.println(collection.isContradictory());
+        if (builder.length() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+
+        return builder.toString();
+    }
+
+    public String joinDisjunction() {
+
+        StringBuilder builder = new StringBuilder();
+
+        for (Formula formula : formulas) {
+            builder.append(formula.toString());
+            builder.append(ALPHABET.getSymbolDisjunction());
+        }
+
+        if (builder.length() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+
+        return builder.toString();
     }
 }
