@@ -1,6 +1,7 @@
 package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
+import ee.moo.skynet.formula.FormulaCollection;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
@@ -92,4 +93,28 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("E"));
         assertEquals(1, result.get("D"));
     }
+
+    public void test6() {
+        known.clear();
+        known.put("A", 1);
+        known.put("D", 0);
+
+        FormulaCollection collection = new FormulaCollection();
+
+        collection.add(Formula.parse("A⊃BvC"));
+        collection.add(Formula.parse("!D⊃!CvB"));
+
+        InferenceRequest request = new InferenceRequest();
+
+        request.setValues(known);
+        request.setFormulaCollectionMP(collection);
+
+        InferenceResult result = strategy.apply(request);
+
+        assertEquals(1, result.get("A"));
+        assertEquals(1, result.get("B"));
+        assertEquals(-1, result.get("C"));
+        assertEquals(0, result.get("D"));
+    }
+
 }

@@ -27,4 +27,7 @@ public class InferenceStrategyMTTest extends TestCase {
         assertEquals(0, result.get("B"));
         assertEquals(-1, result.get("A"));
     }
+
+    public void test2() {
+    }
 }

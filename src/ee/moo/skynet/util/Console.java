@@ -121,21 +121,98 @@ public class Console {
         infer(new InferenceRequest(Formula.parse(formula), decode(values)));
     }
 
-    public static void infer(String values, String... formulas) {
+    public static void inferMP(String values, String... formulas) {
 
         FormulaCollection collection = new FormulaCollection();
 
-        for (String input : formulas) {
-            collection.add(Formula.parse(input));
+        for (String formula : formulas) {
+            collection.add(Formula.parse(formula));
         }
 
-        InferenceRequest request = new InferenceRequest(decode(values));
+        InferenceRequest request = new InferenceRequest();
 
-        if (collection.size() == 1) {
-            request.setFormula(collection.get(0));
-        } else {
-            request.setFormulaCollection(collection);
+        request.setValues(decode(values));
+        request.setFormulaCollectionMP(collection);
+
+        infer(request);
+    }
+
+    public static void inferMP(String values, Formula... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (Formula formula : formulas) {
+            collection.add(formula);
         }
+
+        InferenceRequest request = new InferenceRequest();
+
+        request.setValues(decode(values));
+        request.setFormulaCollectionMP(collection);
+
+        infer(request);
+    }
+
+    public static void inferMT(String values, String... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (String formula : formulas) {
+            collection.add(Formula.parse(formula));
+        }
+
+        InferenceRequest request = new InferenceRequest();
+
+        request.setValues(decode(values));
+        request.setFormulaCollectionMT(collection);
+
+        infer(request);
+    }
+
+    public static void inferMT(String values, Formula... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (Formula formula : formulas) {
+            collection.add(formula);
+        }
+
+        InferenceRequest request = new InferenceRequest();
+
+        request.setValues(decode(values));
+        request.setFormulaCollectionMT(collection);
+
+        infer(request);
+    }
+
+    public static void inferEQ(String values, String... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (String formula : formulas) {
+            collection.add(Formula.parse(formula));
+        }
+
+        InferenceRequest request = new InferenceRequest();
+
+        request.setValues(decode(values));
+        request.setFormulaCollectionEQ(collection);
+
+        infer(request);
+    }
+
+    public static void inferEQ(String values, Formula... formulas) {
+
+        FormulaCollection collection = new FormulaCollection();
+
+        for (Formula formula : formulas) {
+            collection.add(formula);
+        }
+
+        InferenceRequest request = new InferenceRequest();
+
+        request.setValues(decode(values));
+        request.setFormulaCollectionEQ(collection);
 
         infer(request);
     }
@@ -174,6 +251,11 @@ public class Console {
             builder.append("    ");
 
             for (String name : header.getNames()) {
+
+                if (StringUtil.equals(name, InferenceRequest.NAME_FALSE) || StringUtil.equals(name, InferenceRequest.NAME_TRUE)) {
+                    continue;
+                }
+
                 builder.append(ANSI_CYAN);
                 builder.append(StringUtil.lpad(name, 3, ' '));
                 builder.append(ANSI_RESET);
@@ -191,6 +273,11 @@ public class Console {
             builder.append(ANSI_RESET);
 
             for (String name : resultEQ.getNames()) {
+
+
+                if (StringUtil.equals(name, InferenceRequest.NAME_FALSE) || StringUtil.equals(name, InferenceRequest.NAME_TRUE)) {
+                    continue;
+                }
 
                 switch (resultEQ.get(name)) {
 
@@ -227,6 +314,10 @@ public class Console {
 
             for (String name : resultMP.getNames()) {
 
+                if (StringUtil.equals(name, InferenceRequest.NAME_FALSE) || StringUtil.equals(name, InferenceRequest.NAME_TRUE)) {
+                    continue;
+                }
+
                 switch (resultMP.get(name)) {
 
                     case -1:
@@ -261,6 +352,10 @@ public class Console {
             builder.append(ANSI_RESET);
 
             for (String name : resultMT.getNames()) {
+
+                if (StringUtil.equals(name, InferenceRequest.NAME_FALSE) || StringUtil.equals(name, InferenceRequest.NAME_TRUE)) {
+                    continue;
+                }
 
                 switch (resultMT.get(name)) {
 

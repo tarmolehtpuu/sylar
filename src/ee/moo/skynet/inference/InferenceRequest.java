@@ -4,6 +4,7 @@ import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.formula.FormulaCollection;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Map;
  */
 public class InferenceRequest {
 
-    private static final String NAME_TRUE = "TRUE";
-    private static final String NAME_FALSE = "FALSE";
+    public static final String NAME_TRUE = "TRUE";
+    public static final String NAME_FALSE = "FALSE";
 
     private Formula formula;
 
@@ -166,6 +167,10 @@ public class InferenceRequest {
     }
 
     public void setValue(String name, Integer value) {
+        if (values == null) {
+            values = new HashMap<String, Integer>();
+        }
+
         values.put(name, value);
     }
 
@@ -184,5 +189,4 @@ public class InferenceRequest {
     public void setMax(BigInteger max) {
         this.max = max;
     }
-
 }
