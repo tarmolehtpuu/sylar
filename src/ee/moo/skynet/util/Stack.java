@@ -84,5 +84,4 @@ public class Stack<T> {
         return String.format("Stack[%s]", builder.toString());
 
     }
-
 }
