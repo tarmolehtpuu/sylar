@@ -1,22 +1,25 @@
 package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * User: tarmo
  * Date: 6/1/13
  * Time: 1:35 AM
  */
-public class InferenceStrategyMTTest extends TestCase {
+public class InferenceStrategyMTTest {
 
     private Map<String, Integer> known = new HashMap<String, Integer>();
 
     private InferenceStrategy strategy = new InferenceStrategyMT();
 
+    @Test
     public void test1() {
 
         known.clear();
@@ -28,6 +31,7 @@ public class InferenceStrategyMTTest extends TestCase {
         assertEquals(-1, result.get("A"));
     }
 
+    @Test
     public void test2() {
     }
 }

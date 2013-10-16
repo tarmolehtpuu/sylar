@@ -1,20 +1,24 @@
 package ee.moo.skynet.util;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * User: tarmo
  * Date: 10/15/13
  * Time: 11:22 PM
  */
-public class StringUtilTest extends TestCase {
+public class StringUtilTest {
 
+    @Test
     public void testIsEmpty() {
         assertTrue(StringUtil.isEmpty(""));
         assertTrue(StringUtil.isEmpty(null));
         assertFalse(StringUtil.isEmpty("hello"));
     }
 
+    @Test
     public void testEquals() {
         assertTrue(StringUtil.equals(null, null));
         assertTrue(StringUtil.equals("", ""));
@@ -25,6 +29,7 @@ public class StringUtilTest extends TestCase {
         assertFalse(StringUtil.equals("foo", "FOO"));
     }
 
+    @Test
     public void testEqualsIgnoreCase() {
         assertTrue(StringUtil.equalsIgnoreCase(null, null));
         assertTrue(StringUtil.equalsIgnoreCase("", ""));
@@ -35,14 +40,17 @@ public class StringUtilTest extends TestCase {
         assertFalse(StringUtil.equalsIgnoreCase("foo", "bar"));
     }
 
+    @Test
     public void testLpad() {
         assertEquals("XXXX1", StringUtil.lpad("1", 5, 'X'));
     }
 
+    @Test
     public void testRpad() {
         assertEquals("1XXXX", StringUtil.rpad("1", 5, 'X'));
     }
 
+    @Test
     public void testRandom() {
         assertEquals(5, StringUtil.random(5).length());
         assertEquals(4, StringUtil.random(4).length());

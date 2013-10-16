@@ -2,22 +2,25 @@ package ee.moo.skynet.inference;
 
 import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.formula.FormulaCollection;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * User: tarmo
  * Date: 6/1/13
  * Time: 1:17 AM
  */
-public class InferenceStrategyMPTest extends TestCase {
+public class InferenceStrategyMPTest {
 
     private Map<String, Integer> known = new HashMap<String, Integer>();
 
     private InferenceStrategy strategy = new InferenceStrategyMP();
 
+    @Test
     public void testTautology() {
         known.clear();
 
@@ -28,6 +31,7 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("B"));
     }
 
+    @Test
     public void test1() {
 
         known.clear();
@@ -40,6 +44,7 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("B"));
     }
 
+    @Test
     public void test2() {
 
         known.clear();
@@ -53,6 +58,7 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("C"));
     }
 
+    @Test
     public void test3() {
 
         known.clear();
@@ -66,6 +72,7 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(0, result.get("C"));
     }
 
+    @Test
     public void test4() {
 
         known.clear();
@@ -80,6 +87,7 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("C"));
     }
 
+    @Test
     public void test5() {
         known.clear();
         known.put("B", 0);
@@ -94,6 +102,7 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(1, result.get("D"));
     }
 
+    @Test
     public void test6() {
         known.clear();
         known.put("A", 1);
@@ -116,5 +125,4 @@ public class InferenceStrategyMPTest extends TestCase {
         assertEquals(-1, result.get("C"));
         assertEquals(0, result.get("D"));
     }
-
 }

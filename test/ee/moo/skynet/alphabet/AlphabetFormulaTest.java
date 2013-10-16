@@ -1,34 +1,41 @@
 package ee.moo.skynet.alphabet;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * User: tarmo
  * Date: 10/15/13
  * Time: 6:38 PM
  */
-public class AlphabetFormulaTest extends TestCase {
+public class AlphabetFormulaTest {
 
     private AlphabetFormula alphabet;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         alphabet = new AlphabetFormula();
     }
 
+    @Test
     public void testIsValid() {
         assertTrue(alphabet.isValid("!AvB&C⊃(C⇔E)"));
     }
 
+    @Test
     public void testIsValidEmpty() {
         assertFalse(alphabet.isValid(null));
         assertFalse(alphabet.isValid(""));
     }
 
+    @Test
     public void testIsValidFalse() {
         assertFalse(alphabet.isValid("A,B→C,D"));
     }
 
+    @Test
     public void testIsSymbolStatement() {
         assertTrue(alphabet.isSymbolStatement('A'));
         assertTrue(alphabet.isSymbolStatement("A"));
@@ -39,6 +46,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolStatement("aa"));
     }
 
+    @Test
     public void testIsSymbolInversion() {
         assertTrue(alphabet.isSymbolInversion('!'));
         assertTrue(alphabet.isSymbolInversion("!"));
@@ -48,6 +56,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolInversion("¬¬"));
     }
 
+    @Test
     public void testIsSymbolConjunction() {
         assertTrue(alphabet.isSymbolConjunction('&'));
         assertTrue(alphabet.isSymbolConjunction('∧'));
@@ -57,6 +66,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolConjunction("∧∧"));
     }
 
+    @Test
     public void testIsSymbolDisjunction() {
         assertTrue(alphabet.isSymbolDisjunction('v'));
         assertTrue(alphabet.isSymbolDisjunction('∨'));
@@ -66,6 +76,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolDisjunction("∨∨"));
     }
 
+    @Test
     public void testIsSymbolImplication() {
         assertTrue(alphabet.isSymbolImplication('⊃'));
         assertTrue(alphabet.isSymbolImplication('⇒'));
@@ -75,6 +86,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolImplication("⇒⇒"));
     }
 
+    @Test
     public void testIsSymbolEquivalence() {
         assertTrue(alphabet.isSymbolEquivalence('⇔'));
         assertTrue(alphabet.isSymbolEquivalence('↔'));
@@ -87,6 +99,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolEquivalence("=="));
     }
 
+    @Test
     public void testIsSymbolLeftParenthesis() {
         assertTrue(alphabet.isSymbolLeftParenthesis('('));
         assertTrue(alphabet.isSymbolLeftParenthesis('['));
@@ -99,6 +112,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolLeftParenthesis("{{"));
     }
 
+    @Test
     public void testIsSymbolRightParenthesis() {
         assertTrue(alphabet.isSymbolRightParenthesis(')'));
         assertTrue(alphabet.isSymbolRightParenthesis(']'));
@@ -111,6 +125,7 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolRightParenthesis("]]"));
     }
 
+    @Test
     public void testIsSymbolWhitespace() {
         assertTrue(alphabet.isSymbolWhitespace(' '));
         assertTrue(alphabet.isSymbolWhitespace('\t'));
@@ -126,41 +141,49 @@ public class AlphabetFormulaTest extends TestCase {
         assertFalse(alphabet.isSymbolWhitespace("\r\r"));
     }
 
+    @Test
     public void testGetSymbolInversion() {
         assertEquals('¬', alphabet.getSymbolInversion());
         assertEquals("¬", alphabet.getSymbolInversionString());
     }
 
+    @Test
     public void testGetSymbolConjunction() {
         assertEquals('&', alphabet.getSymbolConjunction());
         assertEquals("&", alphabet.getSymbolConjunctionString());
     }
 
+    @Test
     public void testGetSymbolDisjunction() {
         assertEquals('∨', alphabet.getSymbolDisjunction());
         assertEquals("∨", alphabet.getSymbolDisjunctionString());
     }
 
+    @Test
     public void testGetSymbolImplication() {
         assertEquals('⊃', alphabet.getSymbolImplication());
         assertEquals("⊃", alphabet.getSymbolImplicationString());
     }
 
+    @Test
     public void testGetSymbolEquivalence() {
         assertEquals('⇔', alphabet.getSymbolEquivalence());
         assertEquals("⇔", alphabet.getSymbolEquivalenceString());
     }
 
+    @Test
     public void testGetSymbolLeftParenthesis() {
         assertEquals('(', alphabet.getSymbolLeftParenthesis());
         assertEquals("(", alphabet.getSymbolLeftParenthesisString());
     }
 
+    @Test
     public void testGetSymbolRightParenthesis() {
         assertEquals(')', alphabet.getSymbolRightParenthesis());
         assertEquals(")", alphabet.getSymbolRightParenthesisString());
     }
 
+    @Test
     public void testGetSymbolWhitespace() {
         assertEquals(' ', alphabet.getSymbolWhitespace());
         assertEquals(" ", alphabet.getSymbolWhitespaceString());

@@ -1,20 +1,25 @@
 package ee.moo.skynet.util;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * User: tarmo
  * Date: 10/15/13
  * Time: 11:22 PM
  */
-public class StackTest extends TestCase {
+public class StackTest {
 
     private Stack<String> stack;
 
-    protected void setUp() {
+    @Before
+    public void setUp() {
         stack = new Stack<String>();
     }
 
+    @Test
     public void testPushPop() {
         stack.push("foo");
         stack.push("bar");
@@ -25,15 +30,12 @@ public class StackTest extends TestCase {
         assertTrue(stack.isEmpty());
     }
 
+    @Test(expected = IllegalStateException.class)
     public void testPopEmpty() {
-        try {
-            stack.pop();
-            fail("Expecting an IllegalStateException to be thrown!");
-        } catch (IllegalStateException e) {
-            // expected
-        }
+        stack.pop();
     }
 
+    @Test
     public void testPushPeek() {
         stack.push("foo");
         stack.push("bar");
@@ -46,15 +48,12 @@ public class StackTest extends TestCase {
         assertTrue(stack.isEmpty());
     }
 
+    @Test(expected = IllegalStateException.class)
     public void testPushPeekEmpty() {
-        try {
-            stack.peek();
-            fail("Expecting an IllegalStateException to be thrown!");
-        } catch (IllegalStateException e) {
-            // expected
-        }
+        stack.peek();
     }
 
+    @Test
     public void testToString() {
         stack.push("foo");
         stack.push("bar");
@@ -76,6 +75,7 @@ public class StackTest extends TestCase {
         assertEquals(String.format("Stack[%s]", content), stack.toString());
     }
 
+    @Test
     public void testToStringEmpty() {
         assertEquals("Stack[EMPTY]", stack.toString());
     }
