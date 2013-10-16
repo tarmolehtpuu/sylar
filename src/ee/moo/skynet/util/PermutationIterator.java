@@ -46,6 +46,10 @@ public class PermutationIterator {
 
     public int[] next() {
 
+        if (cur.compareTo(max) >= 0) {
+            return null;
+        }
+
         StringBuilder builder = new StringBuilder(cur.toString(2));
 
         while (builder.length() < size) {
