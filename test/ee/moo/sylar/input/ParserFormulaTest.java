@@ -31,6 +31,11 @@ public class ParserFormulaTest {
         parser.parse("    ");
     }
 
+    @Test(expected = ParserException.class)
+    public void testParseInvalid() {
+        parser.parse("A&B)");
+    }
+
     @Test
     public void testParse() {
         Formula formula = parser.parse("(A v B ⊃ ¬C)⇔(B v A ⊃ ¬C)");
