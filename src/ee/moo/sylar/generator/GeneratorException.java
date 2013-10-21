@@ -9,19 +9,8 @@ import ee.moo.sylar.formula.FormulaException;
  */
 public class GeneratorException extends FormulaException {
 
-    public GeneratorException() {
-        super();
-    }
-
     public GeneratorException(String s) {
         super(s);
     }
 
-    public GeneratorException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
-
-    public GeneratorException(Throwable throwable) {
-        super(throwable);
-    }
 }
