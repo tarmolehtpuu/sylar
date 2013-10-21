@@ -1,6 +1,5 @@
 package ee.moo.skynet.generator;
 
-import ee.moo.skynet.formula.Formula;
 import ee.moo.skynet.alphabet.AlphabetSequent;
 
 import java.util.*;
@@ -198,43 +197,5 @@ public class GeneratorSequent implements Generator {
 
         return builder.toString();
 
-    }
-
-    public static void main(String[] args) {
-
-        Generator generator = new GeneratorSequent();
-
-        int total = 5040;
-
-        int totalFalse = 0;
-        int totalTrue = 0;
-        int totalOther = 0;
-
-        for (int i = 0; i < total; i++) {
-
-            String input = generator.generate();
-
-            Formula formula = Formula.parse(input);
-
-            if (formula.isTrueAlways()) {
-                System.out.println(String.format("[T]: %s = %s", input, formula.toString()));
-                totalTrue++;
-
-            } else if (formula.isFalseAlways()) {
-                System.out.println(String.format("[F]: %s = %s", input, formula.toString()));
-                totalFalse++;
-
-            } else {
-                System.out.println(String.format("[O]: %s = %s", input, formula.toString()));
-                totalOther++;
-            }
-        }
-
-        float percentFalse = ((float) totalFalse / (float) total) * 100;
-        float percentTrue = ((float) totalTrue / (float) total) * 100;
-        float percentOther = ((float) totalOther / (float) total) * 100;
-
-        System.out.println(String.format("[O]: %d (%,.2f%%), [T]: %d (%,.2f%%), [F]: %d (%,.2f%%)",
-                totalOther, percentOther, totalTrue, percentTrue, totalFalse, percentFalse));
     }
 }
