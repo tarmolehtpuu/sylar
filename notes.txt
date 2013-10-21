@@ -2,6 +2,18 @@ Meil on fikseeritud tõeväärtusega valemid, ehk valemid mille tõeväärtus ei
 predikaat- ja funktsionaalsümbolite interpretatsioonidest.
 
 
+R = reasoning
+D = deduction
+A = automated
+L = logic
+S = system
+I = intellect
+
+Sylar
+
+SyLAR
+System for Logic and Automated Reasoning
+
 Tuletusreeglid:
 
 MP:
@@ -33,6 +45,8 @@ EQ4:
 !B       A = B
 --------------
      !A
+
+* http://en.wikipedia.org/wiki/Inference_engine
 
 * http://en.wikipedia.org/wiki/Boolean_satisfiability_problem
   - NP Complete, find one where formula evaluates to true (CNF/DNF)
