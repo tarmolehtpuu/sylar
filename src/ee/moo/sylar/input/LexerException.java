@@ -9,20 +9,7 @@ import ee.moo.sylar.formula.FormulaException;
  */
 public class LexerException extends FormulaException {
 
-    public LexerException() {
-        super();
-    }
-
     public LexerException(String s) {
         super(s);
     }
-
-    public LexerException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
-
-    public LexerException(Throwable throwable) {
-        super(throwable);
-    }
-
 }
