@@ -4,7 +4,7 @@ import ee.moo.sylar.formula.Formula;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * User: tarmo
@@ -30,6 +30,11 @@ public class ParserSequentTest {
         parser.parse("    ");
     }
 
+    @Test(expected = ParserException.class)
+    public void testParseOnlySequent() {
+        parser.parse("→");
+    }
+
     @Test
     public void testParse() {
         Formula formula = parser.parse("A,B,C→A,B,C");
@@ -37,6 +42,22 @@ public class ParserSequentTest {
         assertTrue(formula.isImplication());
         assertTrue(formula.getLeft().isConjunction());
         assertTrue(formula.getRight().isDisjunction());
+    }
+
+    @Test
+    public void testParseEmptyLHS() {
+        Formula formula = parser.parse("→A");
+
+        assertTrue(formula.isStatement());
+        assertEquals("A", formula.getName());
+    }
+
+    @Test
+    public void testParseEmptyRHS() {
+        Formula formula = parser.parse("A→");
+
+        assertTrue(formula.isInversion());
+        assertArrayEquals(new String[]{"A"}, formula.getStatements());
     }
 
 }
