@@ -62,7 +62,7 @@ public class Formula {
 
     public Boolean getValue(String name) {
 
-        Boolean value = null;
+        Boolean value;
 
         if (left != null) {
             value = left.getValue(name);
@@ -118,7 +118,7 @@ public class Formula {
         return statements.toArray(new String[statements.size()]);
     }
 
-    public void setValue(String name, boolean value) {
+    public Formula setValue(String name, boolean value) {
 
         if (left != null) {
             left.setValue(name, value);
@@ -131,10 +131,12 @@ public class Formula {
         if (isStatement() && this.name.equals(name)) {
             data = value;
         }
+
+        return this;
     }
 
-    public void setValue(String name, int value) {
-        setValue(name, value == 1);
+    public Formula setValue(String name, int value) {
+        return setValue(name, value == 1);
     }
 
     public Formula getLeft() {
@@ -181,8 +183,9 @@ public class Formula {
         }
     }
 
-    public void setName(String name) {
+    public Formula setName(String name) {
         this.name = name;
+        return this;
     }
 
     public boolean isStatement() {
@@ -282,7 +285,7 @@ public class Formula {
                 return a == b;
 
             } else {
-                throw new RuntimeException(String.format("Unknown node type: %s", type));
+                throw new FormulaException(String.format("Unknown node type: %s", type));
 
             }
         }
@@ -364,7 +367,5 @@ public class Formula {
         }
 
         throw new FormulaException(String.format("Invalid formula: %s", input));
-
     }
-
 }
