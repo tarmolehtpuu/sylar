@@ -7,19 +7,7 @@ package ee.moo.sylar.formula;
  */
 public class FormulaException extends RuntimeException {
 
-    public FormulaException() {
-        super();
-    }
-
     public FormulaException(String s) {
         super(s);
-    }
-
-    public FormulaException(String s, Throwable throwable) {
-        super(s, throwable);
-    }
-
-    public FormulaException(Throwable throwable) {
-        super(throwable);
     }
 }
