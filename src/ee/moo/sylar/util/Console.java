@@ -51,10 +51,6 @@ public class Console {
         System.out.println(formula);
     }
 
-    public static void plot(String input) {
-        plot(Formula.parse(input));
-    }
-
     public static void interpret(String input) {
         interpret(Formula.parse(input));
     }
@@ -434,13 +430,16 @@ public class Console {
         return isContradictory(Formula.parse(formula));
     }
 
-
     public static boolean isTautology(Formula formula) {
         return formula.isTrueAlways();
     }
 
     public static boolean isTautology(String formula) {
         return isTautology(Formula.parse(formula));
+    }
+
+    public static void plot(String input) {
+        plot(Formula.parse(input));
     }
 
     public static void plot(Formula formula) {
