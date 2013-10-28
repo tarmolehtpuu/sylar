@@ -29,6 +29,10 @@ public class FormulaCollection {
         return formulas.get(index);
     }
 
+    public Formula remove(int index) {
+        return formulas.remove(index);
+    }
+
     public int size() {
         return formulas.size();
     }
