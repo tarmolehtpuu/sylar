@@ -3,6 +3,10 @@ package ee.moo.sylar.inference;
 import ee.moo.sylar.formula.Formula;
 import ee.moo.sylar.util.StringUtil;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -146,16 +150,22 @@ public class InferenceEngine {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
         InferenceEngine engine = new InferenceEngine();
 
-        engine.addFormula("C⊃D");
-        engine.addFormula("A⊃B");
-        engine.addFormula("D⊃E");
-        engine.addFormula("B⊃C");
+        BufferedReader reader = new BufferedReader(new FileReader("doc/axioms/test2.txt"));
 
-        engine.setValue("A", 1);
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (!StringUtil.isEmpty(line)) {
+                engine.addFormula(line);
+            }
+        }
+
+        engine.setValue("J", 1);
         engine.init();
         engine.run();
+
     }
 }

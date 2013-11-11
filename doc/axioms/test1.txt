@@ -1,0 +1,100 @@
+J & A ⊃ C ∨ J
+¬B ⊃ E ∨ ¬¬¬B
+E & B & ¬B ∨ ¬¬F & D & E ∨ ¬¬F ⊃ C
+G & D ∨ G ⊃ E ⊃ ¬G & ¬B ∨ E ⊃ ¬G ⊃ D & A
+B & B ∨ F ⊃ C ∨ A
+D & F & D ⊃ E
+J ∨ G ∨ I & F ⇔ F & ¬G & B & A ⊃ A
+F & F ⊃ A ∨ ¬¬¬¬H
+H & ¬E ∨ I ∨ ¬A & I ⊃ F
+J ⊃ J ⊃ H ∨ G
+G ∨ ¬B & E ⊃ ¬B ⇔ ¬C ⊃ E & F
+D ⇔ D ∨ A ⇔ D ⊃ C ⊃ H
+J ⇔ H ⊃ I ⊃ I ⊃ E
+J & E ⇔ B ⇔ F ⊃ H
+I ∨ I ∨ J & F ∨ A ∨ ¬C ∨ G ⊃ D
+C ∨ ¬G ∨ C ∨ ¬F ⊃ ¬¬I
+E ∨ G ∨ ¬I ∨ A & I ⊃ H & H
+E ⊃ ¬¬B
+J ∨ B ∨ ¬¬¬¬D ⇔ ¬F & C ⊃ D
+G ∨ C ⊃ G ⊃ ¬C ⊃ A
+¬B ∨ G & D ⇔ B ∨ E ⊃ ¬E ∨ ¬B
+C & E & H ⇔ C ⊃ F
+¬I ⊃ E
+B & I & D ⊃ C
+I & J ⊃ H ∨ D ⊃ E ∨ ¬B
+B & D ⊃ F
+F ∨ F ⇔ ¬E & F & H ⊃ B ∨ G
+A ⊃ E ∨ I
+G ∨ ¬¬C ∨ H ∨ F ⊃ H ∨ A
+E ∨ D ⊃ B
+I & C ⊃ E
+D ⇔ F & C & F ∨ B ∨ H & ¬F & D ∨ C ⇔ ¬¬H ∨ ¬H & J ∨ E ⊃ I
+¬J ∨ D ⊃ E ⇔ C ∨ J
+F & D ⊃ H
+C ∨ ¬C & A & ¬A ⊃ C
+I & I & I ⊃ E
+I ⊃ A & E ∨ C
+G ∨ F ∨ A & J & I ⊃ I ∨ E
+F & A ⊃ I ⊃ C ∨ D ⊃ C
+I ⇔ I ⊃ D
+F ⇔ F ∨ C ∨ C & D & E & F & C ⊃ A
+G & D ∨ B ⊃ C
+G & J ⊃ J & I
+¬C ⊃ C
+G & ¬I & A ⊃ H ⊃ E
+C & J & J ⊃ H
+E ∨ G ∨ E ⊃ C ∨ A
+C & F ⊃ D ∨ F
+¬H ⇔ B ⊃ F & ¬J
+D ⊃ B ⊃ I
+H ∨ ¬¬¬¬G & ¬A & I ∨ I & B ∨ D ⊃ E & H ⊃ B
+C ∨ C ⇔ ¬F ∨ ¬C ∨ ¬I & D & A & I ∨ ¬D ⊃ A & E ∨ ¬A
+A ⇔ ¬E & J & G & G ⊃ H
+G & C ⊃ ¬¬C ⇔ J ∨ E
+¬¬G ∨ ¬J ∨ B & E ⊃ E & E
+¬¬¬C ⊃ F ⊃ H
+D ∨ I & D & G ⇔ G ∨ E ⇔ H ∨ ¬F ∨ ¬¬H ⊃ F
+I ∨ D & G & J ⊃ E
+B ⇔ B ∨ ¬J ⊃ J ∨ F ∨ A
+E ∨ H ∨ F ⊃ H ⊃ D & I
+¬¬B ⊃ H ⇔ B
+F & G & H & ¬A ⊃ F
+I & J ⇔ A ⇔ C ∨ ¬I ∨ ¬F ∨ F ⊃ D ⊃ ¬F ∨ F
+I ∨ ¬A ∨ H ∨ ¬B & C ⇔ B ∨ ¬F & E ⊃ D ⊃ B
+I ∨ ¬B ⇔ D ⇔ A ⇔ I ∨ D & B & A ∨ E & C ⊃ D ∨ H ∨ ¬E ⇔ I
+J ⇔ C ∨ G & I ⇔ I ⊃ J & J
+¬B & C ⊃ G ⊃ B
+H ⊃ A ⊃ B ⇔ E
+¬C ∨ I ⊃ I ∨ J ∨ F
+B & ¬E & ¬A ∨ A ∨ C ⊃ C & F ⇔ H & H
+H ∨ C & E & E & D & F & E & G ⊃ H & I
+J ⇔ I ∨ A ⊃ F & B ⊃ G ⊃ I ∨ I & H ∨ A
+A & I ⇔ ¬J ∨ ¬H & ¬A ∨ B ⊃ A
+A ∨ F ⊃ F ⊃ D & ¬G ⊃ B
+¬¬E ⊃ H
+E ⊃ G ⊃ A
+B ∨ ¬¬¬J ∨ ¬F ∨ D & C & D ⊃ I ⇔ J ⊃ ¬D & I ⊃ F & ¬E ∨ G
+A ⇔ C ⊃ ¬H ⊃ H ⇔ ¬J ∨ E ⊃ H
+C ⊃ H ∨ I
+¬D ⊃ D & H
+¬G ∨ J ∨ F ⊃ J
+H ⊃ J ∨ E ⇔ E ∨ I ∨ ¬¬H ∨ C ∨ E
+¬G ⊃ ¬G & E
+¬B ∨ J ⊃ D
+D ⊃ H ⊃ A
+H & F ⊃ F
+¬C ∨ A ⊃ G ∨ I
+¬A ∨ B ⊃ D ⇔ C ∨ G
+J ⊃ J ⇔ A ∨ E
+D & D ⊃ A
+E ∨ A & C ⇔ I ∨ B & G ⊃ F & H
+C & B ∨ H ⊃ J
+J ⊃ I ⊃ G ∨ C ∨ B ⊃ A ⇔ E
+B ⊃ ¬D ⊃ H ⊃ H ∨ J ⊃ ¬C ⊃ I ∨ D & J
+G ∨ H ∨ ¬D ∨ ¬I & E ∨ D & ¬¬A ⇔ I ∨ E ⊃ ¬¬B ⊃ A ∨ F
+E ∨ H ⊃ D & E ⊃ I ∨ B
+C & C ∨ D ⇔ G & H ⊃ H
+H ⇔ F & D ⊃ H
+I ∨ J ∨ ¬¬¬G & E ∨ C ⊃ I ⇔ H ⇔ F ⊃ I
+D ∨ G ⊃ H
