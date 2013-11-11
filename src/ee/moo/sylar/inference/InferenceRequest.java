@@ -30,6 +30,7 @@ public class InferenceRequest {
 
     public InferenceRequest(Formula formula) {
         this.formula = formula;
+        this.values = new HashMap<String, Integer>();
     }
 
     public InferenceRequest(Formula formula, Map<String, Integer> values) {
