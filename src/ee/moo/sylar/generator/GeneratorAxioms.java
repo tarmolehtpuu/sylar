@@ -1,9 +1,7 @@
-package ee.moo.sylar.util;
+package ee.moo.sylar.generator;
 
 import ee.moo.sylar.formula.Formula;
 import ee.moo.sylar.formula.FormulaCollection;
-import ee.moo.sylar.generator.Generator;
-import ee.moo.sylar.generator.GeneratorFormula;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.List;
  * Date: 10/28/13
  * Time: 4:12 PM
  */
-public class AxiomSetGenerator {
+public class GeneratorAxioms {
 
     private List<String> axioms = new ArrayList<String>();
 
@@ -57,7 +55,7 @@ public class AxiomSetGenerator {
 
     public static void main(String[] args) throws IOException {
         for (int i = 0; i < 1; i++) {
-            AxiomSetGenerator generator = new AxiomSetGenerator();
+            GeneratorAxioms generator = new GeneratorAxioms();
 
             generator.generate();
             generator.dump();
