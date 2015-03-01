@@ -1,7 +1,0 @@
-STEP: 0
-  A  B  C  D  E  F  G  H  I  J
- -1 -1 -1 -1 -1 -1 -1 -1 -1  1
-
-STEP: 1
-  A  B  C  D  E  F  G  H  I  J
-  1  1  0  1  0  1  1  1  0  1
